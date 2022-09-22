@@ -28,7 +28,7 @@ public class Library {
         }
     }
 
-    public void printPeriodicFunds() {
+    public void printPeriodic() {
         for (Literature literature : funds) {
             if (!(literature instanceof Printable)) {
                 System.out.printf("Unprintable: '%s'%n", literature.getTitle());
@@ -43,16 +43,34 @@ public class Library {
         }
     }
 
+    public void printNonPeriodic() {
+        for (Literature literature : funds) {
+            if (!(literature instanceof Printable)) {
+                System.out.printf("Unprintable: '%s'%n", literature.getTitle());
+                continue;
+            }
+            if ((literature instanceof Periodic)) {
+                System.out.printf("Periodic: '%s'%n", literature.getTitle());
+                continue;
+            }
+
+            ((Printable) literature).print();
+        }
+    }
+
     public void run() {
         add(new Book()
                 .setTitle("First Day")
-                .setAuthor("John Bot"))
-                .add(new Journal()
-                        .setNumber(1)
-                        .setTitle("Hot Wings in your area"))
-                .add(new Book()
-                        .setTitle("Grokking Algorithms")
-                        .setAuthor("Aditya Bhargava"));
+                .setAuthor("John Bot"));
+
+        add(new Journal()
+                .setNumber(1)
+                .setTitle("Hot Wings in your area"));
+
+        add(new Book()
+                .setTitle("Grokking Algorithms")
+                .setAuthor("Aditya Bhargava"));
+
         try {
             add(new Newspaper()
                     .setDate("2022-09-30")
@@ -62,10 +80,20 @@ public class Library {
 
             return;
         }
+
         add(new Hologram()
                 .setTitle("Pectoral"));
 
-        //printFunds();
-        printPeriodicFunds();
+        add(new Poster()
+                .setTitle("Batman"));
+
+        add(new Poster()
+                .setTitle("Red Star"));
+
+        printFunds();
+        System.out.println();
+        printPeriodic();
+        System.out.println();
+        printNonPeriodic();
     }
 }
