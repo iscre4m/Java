@@ -1,6 +1,8 @@
 package step.learning.oop;
 
-public class Book extends Literature {
+public class Book
+        extends Literature
+        implements Printable {
     private String author;
 
     public String getAuthor() {
@@ -13,6 +15,7 @@ public class Book extends Literature {
         return this;
     }
 
+    @Override
     public Book setTitle(String title) {
         super.setTitle(title);
 
@@ -20,11 +23,9 @@ public class Book extends Literature {
     }
 
     @Override
-    public Literature print() {
-        System.out.printf("Book. Author: %s.Title: %s%n",
+    public void print() {
+        System.out.printf("Book. Author: %s. Title: %s%n",
                 this.author, super.getTitle()
         );
-
-        return this;
     }
 }

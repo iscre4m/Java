@@ -12,6 +12,4 @@ public abstract class Literature {
 
         return this;
     }
-
-    public abstract Literature print();
 }

@@ -1,10 +1,11 @@
 package step.learning.oop;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Library {
-    private List<Literature> funds;
+    private final List<Literature> funds;
 
     public Library() {
         funds = new ArrayList<>();
@@ -16,12 +17,30 @@ public class Library {
         return this;
     }
 
-    public Library printFunds() {
+    public void printFunds() {
         for (Literature literature : funds) {
-            literature.print();
-        }
+            if (literature instanceof Printable) {
+                ((Printable) literature).print();
+                continue;
+            }
 
-        return this;
+            System.out.printf("Unprintable: '%s'%n", literature.getTitle());
+        }
+    }
+
+    public void printPeriodicFunds() {
+        for (Literature literature : funds) {
+            if (!(literature instanceof Printable)) {
+                System.out.printf("Unprintable: '%s'%n", literature.getTitle());
+                continue;
+            }
+            if (!(literature instanceof Periodic)) {
+                System.out.printf("Not periodic: '%s'%n", literature.getTitle());
+                continue;
+            }
+
+            ((Printable) literature).print();
+        }
     }
 
     public void run() {
@@ -31,10 +50,22 @@ public class Library {
                 .add(new Journal()
                         .setNumber(1)
                         .setTitle("Hot Wings in your area"))
-                .printFunds()
                 .add(new Book()
                         .setTitle("Grokking Algorithms")
-                        .setAuthor("Aditya Bhargava"))
-                .printFunds();
+                        .setAuthor("Aditya Bhargava"));
+        try {
+            add(new Newspaper()
+                    .setDate("2022-09-30")
+                    .setTitle("New Dawn"));
+        } catch (ParseException e) {
+            System.out.printf("Newspaper creation failed: %s", e.getMessage());
+
+            return;
+        }
+        add(new Hologram()
+                .setTitle("Pectoral"));
+
+        //printFunds();
+        printPeriodicFunds();
     }
 }
