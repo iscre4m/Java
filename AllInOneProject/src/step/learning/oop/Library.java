@@ -1,20 +1,20 @@
 package step.learning.oop;
 
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.ObjectInputStream;
+import java.util.*;
 
 public class Library {
-    private final List<Literature> funds;
+    private List<Literature> funds;
+    private final String PATH = "./src/step/learning/oop/funds.ser";
 
     public Library() {
         funds = new ArrayList<>();
     }
 
-    public Library add(Literature literature) {
+    public void add(Literature literature) {
         funds.add(literature);
-
-        return this;
     }
 
     public void printFunds() {
@@ -58,42 +58,52 @@ public class Library {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void run() {
-        add(new Book()
-                .setTitle("First Day")
-                .setAuthor("John Bot"));
+        // прошла ли десериализация успешно
+        boolean deserialized = true;
 
-        add(new Journal()
-                .setNumber(1)
-                .setTitle("Hot Wings in your area"));
-
-        add(new Book()
-                .setTitle("Grokking Algorithms")
-                .setAuthor("Aditya Bhargava"));
-
-        try {
-            add(new Newspaper()
-                    .setDate("2022-09-30")
-                    .setTitle("New Dawn"));
-        } catch (ParseException e) {
-            System.out.printf("Newspaper creation failed: %s", e.getMessage());
+        try (FileInputStream file = new FileInputStream(PATH)) {
+            ObjectInputStream ois = new ObjectInputStream(file);
+            funds = (List<Literature>) ois.readObject();
+        } catch (FileNotFoundException ex) {
+            System.out.println("Deserialization skipped, file not found");
+            deserialized = false;
+        } catch (Exception ex) {
+            System.out.printf("Deserialization error: %s", ex.getMessage());
 
             return;
         }
 
-        add(new Hologram()
-                .setTitle("Pectoral"));
+        if (deserialized) {
+            System.out.printf("%2d objects deserialized%n%n", funds.size());
+        }
 
-        add(new Poster()
-                .setTitle("Batman"));
+        int choice;
+        Scanner scanner = new Scanner(System.in);
 
-        add(new Poster()
-                .setTitle("Red Star"));
+        while (true) {
+            System.out.println("Choose what to do:");
+            System.out.println("1. All funds");
+            System.out.println("2. Periodic funds");
+            System.out.println("3. Non-periodic funds");
+            System.out.println("0. Exit");
+            choice = scanner.nextInt();
 
-        printFunds();
-        System.out.println();
-        printPeriodic();
-        System.out.println();
-        printNonPeriodic();
+            switch (choice) {
+                case 1:
+                    printFunds();
+                    break;
+                case 2:
+                    printPeriodic();
+                    break;
+                case 3:
+                    printNonPeriodic();
+                    break;
+                default:
+                    return;
+            }
+            System.out.println();
+        }
     }
 }
