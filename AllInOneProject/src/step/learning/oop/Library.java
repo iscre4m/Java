@@ -13,11 +13,11 @@ public class Library {
         funds = new ArrayList<>();
     }
 
-    public void add(Literature literature) {
+    private void add(Literature literature) {
         funds.add(literature);
     }
 
-    public void printFunds() {
+    private void printFunds() {
         for (Literature literature : funds) {
             if (literature instanceof Printable) {
                 ((Printable) literature).print();
@@ -28,7 +28,7 @@ public class Library {
         }
     }
 
-    public void printPeriodic() {
+    private void printPeriodic() {
         for (Literature literature : funds) {
             if (!(literature instanceof Printable)) {
                 System.out.printf("Unprintable: '%s'%n", literature.getTitle());
@@ -43,7 +43,7 @@ public class Library {
         }
     }
 
-    public void printNonPeriodic() {
+    private void printNonPeriodic() {
         for (Literature literature : funds) {
             if (!(literature instanceof Printable)) {
                 System.out.printf("Unprintable: '%s'%n", literature.getTitle());
@@ -58,8 +58,7 @@ public class Library {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public void run() {
+    private void deserialize() {
         // прошла ли десериализация успешно
         boolean deserialized = true;
 
@@ -78,6 +77,11 @@ public class Library {
         if (deserialized) {
             System.out.printf("%2d objects deserialized%n%n", funds.size());
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void run() {
+        deserialize();
 
         int choice;
         Scanner scanner = new Scanner(System.in);
