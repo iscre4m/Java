@@ -1,6 +1,7 @@
 package step.learning.files;
 
-import java.io.File;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class FileNavigator {
@@ -61,10 +62,52 @@ public class FileNavigator {
     }
 
     private void cd(String path) {
-        System.out.printf("cd on %s%n", path);
+        File file = new File(path);
+
+        if (file.isFile()) {
+            System.out.printf("'%s' is a file", path);
+            return;
+        }
+
+        if(!file.exists()) {
+            System.out.printf("'%s' doesn't exist", path);
+            return;
+        }
+
+        currentFolder = path;
+        System.out.printf("Current folder is now %s", currentFolder);
     }
 
     private void cat(String fileName) {
-        System.out.printf("cat on %s%n", fileName);
+        File file = new File(fileName);
+
+        if (file.isDirectory()) {
+            System.out.printf("'%s' is a folder", fileName);
+            return;
+        }
+
+        if (!file.exists()) {
+            System.out.printf("'%s' doesn't exist", fileName);
+            return;
+        }
+
+        StringBuilder stringBuilder;
+
+        try (InputStream reader = new FileInputStream(file.getName())) {
+            int symbol;
+            stringBuilder = new StringBuilder();
+
+            while ((symbol = reader.read()) != -1) {
+                stringBuilder.append((char) symbol);
+            }
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+            return;
+        }
+
+        String content = new String(
+                stringBuilder.toString().getBytes(StandardCharsets.ISO_8859_1),
+                StandardCharsets.UTF_8);
+        System.out.println(content);
     }
 }
