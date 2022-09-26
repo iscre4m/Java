@@ -9,22 +9,18 @@ public class FileNavigator {
 
     public FileNavigator() {
         scanner = new Scanner(System.in);
-        currentFolder = "./";
+        currentFolder = String.format(".%s", File.separator);
     }
 
     public void run() {
-        String[] list = new File(currentFolder).list();
+        ls();
 
-        if (list != null) {
-            System.out.printf("'%s' content:%n", currentFolder);
-            for (String file : list) {
-                System.out.printf(" > %20s%n", file);
-            }
-        }
         String command;
         String[] parts;
+
         while (true) {
             System.out.println("Input command:");
+
             command = scanner.nextLine();
             parts = command.split(" ");
 
@@ -32,6 +28,7 @@ public class FileNavigator {
                 case "exit" -> {
                     return;
                 }
+                case "ls" -> ls();
                 case "cd" -> {
                     if (parts.length == 1) {
                         System.out.println("No argument provided");
@@ -52,8 +49,19 @@ public class FileNavigator {
         }
     }
 
-    private void cd(String folder) {
-        System.out.printf("cd on %s%n", folder);
+    private void ls() {
+        String[] list = new File(currentFolder).list();
+
+        if (list != null) {
+            System.out.printf("'%s' content:%n", currentFolder);
+            for (String file : list) {
+                System.out.printf(" > %20s%n", file);
+            }
+        }
+    }
+
+    private void cd(String path) {
+        System.out.printf("cd on %s%n", path);
     }
 
     private void cat(String fileName) {
