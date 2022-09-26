@@ -1,9 +1,6 @@
 package step.learning.files;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 public class FilesDemo {
@@ -111,9 +108,15 @@ public class FilesDemo {
         content = new String(
                 stringBuilder.toString().getBytes(StandardCharsets.ISO_8859_1),
                 StandardCharsets.UTF_8);
-        System.out.println(content);
+        //System.out.println(content);
 
-
+        try (FileWriter writer = new FileWriter("result.txt")) {
+            writer.write("Hello World");
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+            return;
+        }
+        System.out.println("Finished writing");
     }
     // endregion
 }
