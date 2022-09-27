@@ -75,11 +75,11 @@ public class FileNavigator {
         }
 
         currentFolder = path;
-        System.out.printf("Current folder is now %s", currentFolder);
+        System.out.printf("Current folder is now %s%n", currentFolder);
     }
 
     private void cat(String fileName) {
-        File file = new File(fileName);
+        File file = new File(String.format("%s%s%s", currentFolder, File.separator, fileName));
 
         if (file.isDirectory()) {
             System.out.printf("'%s' is a folder", fileName);
@@ -93,7 +93,7 @@ public class FileNavigator {
 
         StringBuilder stringBuilder;
 
-        try (InputStream reader = new FileInputStream(file.getName())) {
+        try (InputStream reader = new FileInputStream(file.getPath())) {
             int symbol;
             stringBuilder = new StringBuilder();
 
