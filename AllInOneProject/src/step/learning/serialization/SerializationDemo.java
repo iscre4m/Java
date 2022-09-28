@@ -1,13 +1,17 @@
 package step.learning.serialization;
 
+import step.learning.annotations.DemoClass;
+import step.learning.annotations.EntryPoint;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-
+@DemoClass
 public class SerializationDemo {
     private final String OBJ_FILE = "./src/step/learning/serialization/data.ser";
     private final String LIST_FILE = "./src/step/learning/serialization/list.ser";
 
+    @EntryPoint
     public void run() {
         //serialize();
         //deserialize();

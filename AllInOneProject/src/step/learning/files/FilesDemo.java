@@ -1,9 +1,14 @@
 package step.learning.files;
 
+import step.learning.annotations.DemoClass;
+import step.learning.annotations.EntryPoint;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
+@DemoClass
 public class FilesDemo {
+    @EntryPoint
     public void run() {
         //fsDemo();
         ioDemo();

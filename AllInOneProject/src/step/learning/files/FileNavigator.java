@@ -1,9 +1,13 @@
 package step.learning.files;
 
+import step.learning.annotations.DemoClass;
+import step.learning.annotations.EntryPoint;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
+@DemoClass(priority = 3)
 public class FileNavigator {
     private Scanner scanner;
     private String currentFolder;
@@ -13,6 +17,7 @@ public class FileNavigator {
         currentFolder = String.format(".%s", File.separator);
     }
 
+    @EntryPoint
     public void run() {
         ls();
 

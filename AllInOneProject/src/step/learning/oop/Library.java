@@ -1,10 +1,14 @@
 package step.learning.oop;
 
+import step.learning.annotations.DemoClass;
+import step.learning.annotations.EntryPoint;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.ObjectInputStream;
 import java.util.*;
 
+@DemoClass(priority = 2)
 public class Library {
     private List<Literature> funds;
     private final String PATH = "./src/step/learning/oop/funds.ser";
@@ -80,6 +84,7 @@ public class Library {
     }
 
     @SuppressWarnings("unchecked")
+    @EntryPoint
     public void run() {
         deserialize();
 
