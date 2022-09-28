@@ -1,14 +1,29 @@
 package step.learning.annotations;
 
+import java.util.Random;
+
 public class MixedClass {
-    @FieldAnnotation(priority = 1)
-    public int firstField;
+    public MixedClass() {
+        Random random = new Random();
+
+        firstField = random.nextInt(100);
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < 10; i++) {
+            stringBuilder.append(
+                    (char) random.nextInt(97, 123));
+        }
+        secondField = stringBuilder.toString();
+        thirdField = random.nextDouble(20);
+    }
 
     @FieldAnnotation(version = "1.2")
-    public String secondField;
+    public int firstField;
+
+    @FieldAnnotation(priority = 2)
+    protected String secondField;
 
     @FieldAnnotation()
-    public double thirdField;
+    private double thirdField;
 
     public void firstMethod() {
         System.out.println("first method");

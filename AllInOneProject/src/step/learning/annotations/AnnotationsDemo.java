@@ -20,18 +20,28 @@ public class AnnotationsDemo {
             return;
         }
 
+        // region Type
         checkForTypeAnnotation(annotatedClass);
         checkForTypeAnnotation(nonAnnotatedClass);
         checkForTypeAnnotation(mixedClass);
         System.out.println();
-
+        // endregion
+        // region Method
         checkForMethodAnnotation(annotatedClass);
         checkForMethodAnnotation(nonAnnotatedClass);
         checkForMethodAnnotation(mixedClass);
-
+        // endregion
+        // region Field
         checkForFieldAnnotation(annotatedClass);
         checkForFieldAnnotation(nonAnnotatedClass);
         checkForFieldAnnotation(mixedClass);
+        // endregion
+
+        // region HW
+        annotatedClassFields();
+        nonAnnotatedClassFields();
+        mixedClassFields();
+        // endregion
 
         System.out.println("Done");
     }
@@ -94,6 +104,108 @@ public class AnnotationsDemo {
             } else {
                 System.out.printf("Field '%15s' in class '%s' has no FieldAnnotation%n",
                         field.getName(), classToCheck.getSimpleName());
+            }
+        }
+        System.out.println();
+    }
+
+    private void annotatedClassFields() {
+        Field[] fields = AnnotatedClass.class.getDeclaredFields();
+        AnnotatedClass obj = null;
+
+        System.out.println("Annotated class:");
+        for (Field field : fields) {
+            FieldAnnotation annotation = field
+                    .getAnnotation(FieldAnnotation.class);
+
+            if (annotation == null) {
+                System.out.printf("Field '%s' has no FieldAnnotation%n", field.getName());
+                continue;
+            }
+
+            if (annotation.priority() < 0) {
+                System.out.printf("Field '%s' has priority < 0%n", field.getName());
+                continue;
+            }
+
+            if (obj == null) {
+                obj = new AnnotatedClass();
+            }
+
+            field.setAccessible(true);
+            try {
+                System.out.printf("Field: '%s', value: '%s'%n",
+                        field.getName(), field.get(obj));
+            } catch (IllegalAccessException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        System.out.println();
+    }
+
+    private void nonAnnotatedClassFields() {
+        Field[] fields = NonAnnotatedClass.class.getDeclaredFields();
+        NonAnnotatedClass obj = null;
+
+        System.out.println("Non-annotated class:");
+        for (Field field : fields) {
+            FieldAnnotation annotation = field
+                    .getAnnotation(FieldAnnotation.class);
+
+            if (annotation == null) {
+                System.out.printf("Field '%s' has no FieldAnnotation%n", field.getName());
+                continue;
+            }
+
+            if (annotation.priority() < 0) {
+                System.out.printf("Field '%s' has priority < 0%n", field.getName());
+                continue;
+            }
+
+            if (obj == null) {
+                obj = new NonAnnotatedClass();
+            }
+
+            field.setAccessible(true);
+            try {
+                System.out.printf("Field: '%s', value: '%s'%n",
+                        field.getName(), field.get(obj));
+            } catch (IllegalAccessException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        System.out.println();
+    }
+
+    private void mixedClassFields() {
+        Field[] fields = MixedClass.class.getDeclaredFields();
+        MixedClass obj = null;
+
+        System.out.println("Mixed class:");
+        for (Field field : fields) {
+            FieldAnnotation annotation = field
+                    .getAnnotation(FieldAnnotation.class);
+
+            if (annotation == null) {
+                System.out.printf("Field '%s' has no FieldAnnotation%n", field.getName());
+                continue;
+            }
+
+            if (annotation.priority() < 0) {
+                System.out.printf("Field '%s' has priority < 0%n", field.getName());
+                continue;
+            }
+
+            if (obj == null) {
+                obj = new MixedClass();
+            }
+
+            field.setAccessible(true);
+            try {
+                System.out.printf("Field: '%s', value: '%s'%n",
+                        field.getName(), field.get(obj));
+            } catch (IllegalAccessException ex) {
+                System.out.println(ex.getMessage());
             }
         }
         System.out.println();
