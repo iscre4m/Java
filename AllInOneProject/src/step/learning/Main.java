@@ -1,6 +1,6 @@
 package step.learning;
 
-import step.learning.files.FileNavigator;
+import step.learning.annotations.AnnotationsDemo;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,6 +9,7 @@ public class Main {
         //new Library().run();
         //new SerializationDemo().run();
         //new FilesDemo().run();
-        new FileNavigator().run();
+        //new FileNavigator().run();
+        new AnnotationsDemo().run();
     }
 }
