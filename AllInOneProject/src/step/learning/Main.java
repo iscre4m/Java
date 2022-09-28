@@ -6,63 +6,29 @@ import step.learning.annotations.EntryPoint;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
-        String packageName = Main.class.getPackage().getName();
-        List<String> classNames = getClassNames(packageName);
+    private static List<Class<?>> demoClasses;
+    private static Map<Class<?>, Object> cachedObjects;
 
-        if (classNames == null) {
+    public static void main(String[] args) {
+        cachedObjects = new HashMap<>();
+        demoClasses = getDemoClasses();
+        if (demoClasses == null) {
             System.out.println("Scanning error. Program terminated");
             return;
         }
 
-        List<Class<?>> demoClasses = new ArrayList<>();
-        Class<?> classToAdd;
-        for (String className : classNames) {
-            try {
-                classToAdd = Class.forName(className);
-            } catch (Exception ignored) {
-                continue;
+        int userInput;
+        while (true) {
+            printMenu();
+            userInput = getUserInput();
+            if (userInput == 0) {
+                return;
             }
-
-            if (classToAdd.isAnnotationPresent(DemoClass.class)) {
-                demoClasses.add(classToAdd);
-            }
-        }
-
-        int i = 1;
-        for (Class<?> demoClass : demoClasses) {
-            System.out.printf("%d. %s%n", i++, demoClass.getSimpleName());
-        }
-        System.out.println("0. Exit");
-        System.out.println("Make a choice:");
-        Scanner scanner = new Scanner(System.in);
-        int userInput = -1;
-        try {
-            userInput = scanner.nextInt();
-        } catch (InputMismatchException ignored) {
-            System.out.println("Incorrect input");
-            return;
-        }
-
-        Class<?> classToExecute = demoClasses.get(userInput - 1);
-        Method[] methods = classToExecute.getDeclaredMethods();
-        for (Method method : methods) {
-            if (method.isAnnotationPresent(EntryPoint.class)) {
-                try {
-                    method.invoke(classToExecute
-                            .getDeclaredConstructor()
-                            .newInstance());
-                } catch (Exception ex) {
-                    System.out.printf("Entry point error %s%n",
-                            ex.getMessage());
-                }
-            }
+            handleUserInput(userInput);
+            System.out.println();
         }
     }
 
@@ -89,6 +55,7 @@ public class Main {
         }
 
         List<String> classNames = new ArrayList<>();
+        List<String> classNamesToAdd;
 
         for (File file : list) {
             if (file.isFile()) {
@@ -100,10 +67,114 @@ public class Main {
                                     fileName.lastIndexOf('.'))));
                 }
             } else {
-                classNames.addAll(getClassNames(String.format("%s.%s", packageName, file.getName())));
+                classNamesToAdd = getClassNames(
+                        String.format("%s.%s",
+                                packageName, file.getName()));
+
+                if (classNamesToAdd != null) {
+                    classNames.addAll(classNamesToAdd);
+                }
             }
         }
 
         return classNames;
+    }
+
+    private static List<Class<?>> getDemoClasses() {
+        String packageName = Main.class.getPackage().getName();
+        List<String> classNames = getClassNames(packageName);
+
+        if (classNames == null) {
+            return null;
+        }
+
+        List<Class<?>> demoClasses = new ArrayList<>();
+        Class<?> classToAdd;
+        for (String className : classNames) {
+            try {
+                classToAdd = Class.forName(className);
+            } catch (Exception ignored) {
+                continue;
+            }
+
+            if (classToAdd.isAnnotationPresent(DemoClass.class)) {
+                demoClasses.add(classToAdd);
+            }
+        }
+
+        return demoClasses;
+    }
+
+    private static void printMenu() {
+        int i = 1;
+
+        //Значения приоритетов (выше - приоритетнее):
+        //AnnotationsDemo - 0
+        //FilesDemo - 0
+        //FileNavigator - 3
+        //SerializationDemo - 1
+        //Library - 2
+        demoClasses.sort((first, second) -> {
+            int fPriority = first
+                    .getAnnotation(DemoClass.class)
+                    .priority();
+            int sPriority = second
+                    .getAnnotation(DemoClass.class)
+                    .priority();
+
+            return Integer.compare(sPriority, fPriority);
+        });
+
+        for (Class<?> demoClass : demoClasses) {
+            System.out.printf("%d. %s%n", i++, demoClass.getSimpleName());
+        }
+        System.out.println("0. Exit");
+        System.out.println("Make a choice:");
+    }
+
+    private static int getUserInput() {
+        Scanner scanner = new Scanner(System.in);
+        int userInput;
+
+        while (true) {
+            try {
+                userInput = scanner.nextInt();
+
+                if (userInput < 0 || userInput > demoClasses.size()) {
+                    System.out.printf("Option '%d' is invalid%n", userInput);
+                    continue;
+                }
+
+                return userInput;
+            } catch (InputMismatchException ignored) {
+                System.out.println("Incorrect input type");
+                scanner.nextLine();
+            }
+        }
+    }
+
+    private static void handleUserInput(int input) {
+        Class<?> classToExecute = demoClasses.get(input - 1);
+        Method[] methods = classToExecute.getDeclaredMethods();
+        Object objectToCache;
+
+        for (Method method : methods) {
+            if (method.isAnnotationPresent(EntryPoint.class)) {
+                try {
+                    if (cachedObjects.containsKey(classToExecute)) {
+                        method.invoke(cachedObjects.get(classToExecute));
+                        continue;
+                    }
+                    objectToCache = classToExecute
+                            .getDeclaredConstructor()
+                            .newInstance();
+                    cachedObjects.put(classToExecute, objectToCache);
+                    method.invoke(objectToCache);
+                } catch (Exception ex) {
+                    System.out.printf("Entry point error: %s%n",
+                            ex.getMessage());
+                }
+            }
+        }
     }
 }
