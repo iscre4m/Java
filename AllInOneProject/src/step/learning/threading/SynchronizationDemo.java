@@ -13,6 +13,7 @@ public class SynchronizationDemo {
     @EntryPoint
     public void demo() {
         System.out.println("Synchronization demo");
+        /*
         sum = 100;
         threads = 12;
         for (int i = 0; i < 12; i++) {
@@ -29,6 +30,17 @@ public class SynchronizationDemo {
             System.out.println(result);
         } catch (InterruptedException | ExecutionException ex) {
             System.out.println(ex.getMessage());
+        }
+
+        pool.shutdown();
+         */
+
+        ExecutorService pool = Executors.newFixedThreadPool(12);
+        sum = 100;
+        threads = 12;
+
+        for (int i = 0; i < 12; i++) {
+            pool.submit(plusTenPercentFinal);
         }
 
         pool.shutdown();
