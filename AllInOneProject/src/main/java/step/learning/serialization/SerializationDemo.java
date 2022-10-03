@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 @DemoClass(priority = 1)
 public class SerializationDemo {
-    private final String OBJ_FILE = "./src/step/learning/serialization/data.ser";
-    private final String LIST_FILE = "./src/step/learning/serialization/list.ser";
+    private final String OBJ_FILE = "./src/main/java/step/learning/serialization/data.ser";
+    private final String LIST_FILE = "./src/main/java/step/learning/serialization/list.ser";
 
     @EntryPoint
     public void run() {

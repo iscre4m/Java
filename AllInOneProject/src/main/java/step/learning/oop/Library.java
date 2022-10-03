@@ -11,7 +11,7 @@ import java.util.*;
 @DemoClass(priority = 2)
 public class Library {
     private List<Literature> funds;
-    private final String PATH = "./src/step/learning/oop/funds.ser";
+    private final String PATH = "./src/main/java/step/learning/oop/funds.ser";
 
     public Library() {
         funds = new ArrayList<>();

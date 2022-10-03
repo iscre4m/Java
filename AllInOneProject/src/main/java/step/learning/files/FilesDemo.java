@@ -98,7 +98,7 @@ public class FilesDemo {
         String content;
         StringBuilder stringBuilder;
 
-        try (InputStream reader = new FileInputStream("./src/step/learning/files/text.txt")) {
+        try (InputStream reader = new FileInputStream("./src/main/java/step/learning/files/text.txt")) {
             int symbol;
             stringBuilder = new StringBuilder();
 
@@ -115,7 +115,7 @@ public class FilesDemo {
                 StandardCharsets.UTF_8);
         //System.out.println(content);
 
-        try (FileWriter writer = new FileWriter("result.txt")) {
+        try (FileWriter writer = new FileWriter("./src/main/java/step/learning/files/result.txt")) {
             writer.write("Hello World");
         } catch (IOException ex) {
             System.out.println(ex.getMessage());

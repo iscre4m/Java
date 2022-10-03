@@ -1,4 +1,5 @@
 out/
+target/
 *.drawio
 *.png
 *.ser
