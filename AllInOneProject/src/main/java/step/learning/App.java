@@ -3,7 +3,12 @@ package step.learning;
 import com.google.inject.Inject;
 import step.learning.annotations.DemoClass;
 import step.learning.annotations.EntryPoint;
+import step.learning.services.RandomNumberProvider;
+import step.learning.services.Service;
+import step.learning.services.SymbolService;
+import step.learning.services.TimeService;
 
+import javax.inject.Named;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -16,14 +21,32 @@ public class App {
     private RandomNumberProvider random;
     @Inject
     private TimeService timeService;
+
+    private final SymbolService symbolService;
+    private final String mssqlConStr;
+    private final String oracleSqlConStr;
+
     private static List<Class<?>> demoClasses;
     private static Map<Class<?>, Object> cachedObjects;
 
+    @Inject
+    public App(
+            @Named("CharProvider") SymbolService symbolService,
+            @Named("MSSQL") String mssqlConStr,
+            @Named("OracleSQL") String oracleSqlConStr) {
+        this.symbolService = symbolService;
+        this.mssqlConStr = mssqlConStr;
+        this.oracleSqlConStr = oracleSqlConStr;
+    }
+
     public void run() {
-        //System.out.println(service.getString());
-        //System.out.println(random.getNumber());
+        System.out.println(service.getString());
+        System.out.println(random.getNumber());
         System.out.println(timeService.getDate());
         System.out.println(timeService.getTime());
+        System.out.println(symbolService.getSymbol());
+        System.out.format("MSSQL: '%s' OracleSQL: '%s'%n",
+                mssqlConStr, oracleSqlConStr);
     }
 
     public void run2() {
@@ -192,3 +215,6 @@ public class App {
         }
     }
 }
+// []‾\  /‾()
+// []--<>--()
+// []_/  \_()

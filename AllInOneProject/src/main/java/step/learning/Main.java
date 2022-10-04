@@ -1,12 +1,10 @@
 package step.learning;
 
 import com.google.inject.Guice;
-import com.google.inject.Injector;
+import step.learning.services.ConfigModule;
 
 public class Main {
     public static void main(String[] args) {
-        Injector injector = Guice.createInjector();
-        injector.getInstance(App.class)
-                .run();
+        Guice.createInjector(new ConfigModule()).getInstance(App.class).run();
     }
 }
