@@ -3,10 +3,7 @@ package step.learning;
 import com.google.inject.Inject;
 import step.learning.annotations.DemoClass;
 import step.learning.annotations.EntryPoint;
-import step.learning.services.RandomNumberProvider;
-import step.learning.services.Service;
-import step.learning.services.SymbolService;
-import step.learning.services.TimeService;
+import step.learning.services.*;
 
 import javax.inject.Named;
 import java.io.File;
@@ -25,6 +22,8 @@ public class App {
     private final SymbolService symbolService;
     private final String mssqlConStr;
     private final String oracleSqlConStr;
+    private final HashService sha1Service;
+    private final HashService md5Service;
 
     private static List<Class<?>> demoClasses;
     private static Map<Class<?>, Object> cachedObjects;
@@ -33,10 +32,14 @@ public class App {
     public App(
             @Named("CharProvider") SymbolService symbolService,
             @Named("MSSQL") String mssqlConStr,
-            @Named("OracleSQL") String oracleSqlConStr) {
+            @Named("OracleSQL") String oracleSqlConStr,
+            @Named("SHA1Service") HashService sha1Service,
+            @Named("MD5Service") HashService md5Service) {
         this.symbolService = symbolService;
         this.mssqlConStr = mssqlConStr;
         this.oracleSqlConStr = oracleSqlConStr;
+        this.sha1Service = sha1Service;
+        this.md5Service = md5Service;
     }
 
     public void run() {
@@ -47,6 +50,8 @@ public class App {
         System.out.println(symbolService.getSymbol());
         System.out.format("MSSQL: '%s' OracleSQL: '%s'%n",
                 mssqlConStr, oracleSqlConStr);
+        System.out.println(sha1Service.hash("stringToHash"));
+        System.out.println(md5Service.hash("stringToHash"));
     }
 
     public void run2() {
@@ -215,6 +220,3 @@ public class App {
         }
     }
 }
-// []‾\  /‾()
-// []--<>--()
-// []_/  \_()
