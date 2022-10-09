@@ -2,7 +2,6 @@ package step.learning;
 
 import com.mysql.cj.jdbc.Driver;
 
-import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.Random;
 
@@ -52,20 +51,49 @@ public class App {
             return;
         }
 
-        byte[] bytes = new byte[random.nextInt(10, 21)];
-        random.nextBytes(bytes);
-        sqlCommand = String.format("INSERT INTO randoms " +
-                        "VALUES (UUID_SHORT(), %d, '%s')",
-                random.nextInt(),
-                new String(bytes, StandardCharsets.UTF_16));
+//        sqlCommand = String.format("INSERT INTO randoms " +
+//                        "VALUES (UUID_SHORT(), %d, '%s')",
+//                random.nextInt(),
+//                String.format("str %d), random.nextInt());
+//        try (Statement statement = connection.createStatement()) {
+//            statement.executeUpdate(sqlCommand);
+//        } catch (SQLException ex) {
+//            System.out.printf("Query error: %s%n", ex.getMessage());
+//            System.out.printf("SQL Command: %s%n", sqlCommand);
+//            return;
+//        }
+        // endregion
+
+        // region ResultSet
+        sqlCommand = "SELECT r.id, r.num, r.str FROM randoms AS r";
         try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate(sqlCommand);
+            ResultSet result = statement.executeQuery(sqlCommand);
+            while (result.next()) {
+                System.out.printf("%d %11d %s%n",
+                        result.getLong("id"),
+                        result.getInt("num"),
+                        result.getString("str")
+                );
+            }
         } catch (SQLException ex) {
             System.out.printf("Query error: %s%n", ex.getMessage());
             System.out.printf("SQL Command: %s%n", sqlCommand);
             return;
         }
         // endregion
+
+//        sqlCommand = "INSERT INTO randoms " +
+//                "VALUES (UUID_SHORT(), ?, ?)";
+//        try(PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
+//            statement.setInt(1, random.nextInt());
+//            statement.setString(2,
+//                    String.format("str %d", random.nextInt()));
+//            statement.executeUpdate();
+//        } catch (SQLException ex) {
+//            System.out.printf("Query error: %s%n", ex.getMessage());
+//            System.out.printf("SQL Command: %s%n", sqlCommand);
+//            return;
+//        }
 
         try {
             connection.close();
