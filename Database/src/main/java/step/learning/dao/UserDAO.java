@@ -108,7 +108,8 @@ public class UserDAO {
     }
 
     public User getUserByCredentialsOld(String username, String password) {
-        String sqlCommand = "SELECT * FROM users AS u WHERE u.`username` = ? AND u.`password` = ?";
+        String sqlCommand = "SELECT * FROM users AS u " +
+                "WHERE u.`username` = ? AND u.`password` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, username);
             statement.setString(2, getPasswordHash(password, ""));
