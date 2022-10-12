@@ -9,12 +9,10 @@ import step.learning.services.HashService;
 import javax.inject.Named;
 import java.sql.*;
 import java.util.Date;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class App {
     private final Random random;
-    private final HashService hashService;
     private final String connectionString;
     private Connection connection;
     private final UserDAO userDAO;
@@ -26,7 +24,6 @@ public class App {
                Connection connection,
                UserDAO userDAO) {
         random = new Random();
-        this.hashService = hashService;
         this.connectionString = connectionString;
         this.connection = connection;
         this.userDAO = userDAO;
@@ -47,31 +44,65 @@ public class App {
             System.out.printf("Command: %s", sqlCommand);
         }
 
+        Map<Integer, Runnable> choiceToAction = new HashMap<>();
+        choiceToAction.put(1, this::registerUser);
+        choiceToAction.put(2, this::authenticateUser);
+
         System.out.println("1 - Register");
-        System.out.println("2 - Login");
-        System.out.print("Input choice: ");
-        int userInput = kbScanner.nextInt();
-        kbScanner.nextLine();
-        if (userInput == 1) {
-            String username = getStringInput("username");
-            while (!userDAO.isUsernameUnique(username)) {
-                System.out.printf("Username '%s' already exists%n", username);
-                username = getStringInput("username");
+        System.out.println("2 - Authenticate");
+        System.out.println("0 - Exit");
+
+        int userInput;
+        while (true) {
+            System.out.print("Input choice: ");
+            userInput = kbScanner.nextInt();
+            kbScanner.nextLine();
+
+            if (userInput == 0) {
+                break;
             }
-            String password = getStringInput("password");
-            String name = getStringInput("name");
 
-            User user = new User();
-            user.setUsername(username);
-            user.setPassword(hashService.hash(password));
-            user.setName(name);
-
-            if (userDAO.add(user) == null) {
-                System.out.println("Insertion failed");
-            } else {
-                System.out.println("Insertion successful");
+            try {
+                choiceToAction.get(userInput).run();
+                break;
+            } catch (NullPointerException ex) {
+                System.out.printf("Invalid option '%d'%n", userInput);
             }
         }
+    }
+
+    private void registerUser() {
+        String username = getStringInput("username");
+        while (!userDAO.isUsernameUnique(username)) {
+            System.out.printf("Username '%s' already exists%n", username);
+            username = getStringInput("username");
+        }
+        String password = getStringInput("password");
+        String name = getStringInput("name");
+
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setName(name);
+
+        if (userDAO.add(user) == null) {
+            System.out.println("Insertion failed");
+        } else {
+            System.out.println("Insertion successful");
+        }
+    }
+
+    private void authenticateUser() {
+        String username = getStringInput("username");
+        String password = getStringInput("password");
+
+        User user = userDAO.getUserByCredentials(username, password);
+
+        if (user == null) {
+            System.out.println("Access denied");
+            return;
+        }
+        System.out.printf("Welcome, %s%n", user.getName());
     }
 
     private String getStringInput(String parameter) {
