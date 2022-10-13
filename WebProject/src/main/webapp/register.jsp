@@ -2,10 +2,10 @@
 <html>
 <head>
     <title>Register</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/style.css">
 </head>
 <body>
-<jsp:include page="navbar.jsp"/>
+<jsp:include page="WEB-INF/navbar.jsp"/>
 <div>
     <form method="post">
         <div>
@@ -27,6 +27,6 @@
         <button type="submit">Register</button>
     </form>
 </div>
-<jsp:include page="footer.jsp"/>
+<jsp:include page="WEB-INF/footer.jsp"/>
 </body>
 </html>

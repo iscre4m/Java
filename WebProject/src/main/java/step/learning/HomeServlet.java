@@ -12,14 +12,21 @@ public class HomeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         HttpSession session = req.getSession();
+
+        String name = (String) session.getAttribute("name");
         String username = (String) session.getAttribute("username");
+
+        req.setAttribute("name", name);
         req.setAttribute("username", username);
 
+        if(name != null) {
+            session.removeAttribute("name");
+        }
         if(username != null) {
             session.removeAttribute("username");
         }
 
-        req.getRequestDispatcher("WEB-INF/index.jsp")
+        req.getRequestDispatcher("index.jsp")
                 .forward(req, resp);
     }
 }
