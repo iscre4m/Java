@@ -3,7 +3,7 @@
     <ul>
         <% for (String link : links) { %>
         <li>
-            <a href="<%= link %>.jsp">
+            <a href="<%= link %>">
                 <%= link.toUpperCase() %>
             </a>
         </li>
