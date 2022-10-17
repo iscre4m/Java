@@ -1,4 +1,4 @@
-<% String[] links = {"index", "register"}; %>
+<% String[] links = {"index", "register", "filter"}; %>
 <nav>
     <ul>
         <% for (String link : links) { %>
