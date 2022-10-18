@@ -31,7 +31,7 @@ public class App {
     }
 
     public void run() {
-        String sqlCommand = "CREATE TABLE IF NOT EXISTS Users (" +
+        String sqlCommand = "CREATE TABLE IF NOT EXISTS users (" +
                 "      `id`     CHAR(36) DEFAULT UUID() COMMENT 'UUID'," +
                 "`username`  VARCHAR(64) NOT NULL," +
                 "`password`     CHAR(40) NOT NULL       COMMENT 'SHA-160 hash'," +

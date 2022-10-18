@@ -31,7 +31,7 @@ public class UserDAO {
     public String add(User user) {
         user.setId(UUID.randomUUID().toString());
         user.setSalt(hashService.hash(UUID.randomUUID().toString()));
-        String sqlCommand = "INSERT INTO Users" +
+        String sqlCommand = "INSERT INTO users" +
                 "(`id`, `username`, `password`, `salt`, `name`)" +
                 "VALUES (?, ?, ?, ?, ?)";
 
@@ -59,7 +59,7 @@ public class UserDAO {
      */
     public boolean isUsernameUnique(String username) {
         String sqlCommand = "SELECT COUNT(u.id)" +
-                "FROM Users AS u WHERE u.`username` = ?";
+                "FROM users AS u WHERE u.`username` = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, username);
@@ -83,7 +83,7 @@ public class UserDAO {
      * @return entities.User or null if not found
      */
     public User getUserByCredentials(String username, String password) {
-        String sqlCommand = "SELECT * FROM Users AS u WHERE u.`username` = ?";
+        String sqlCommand = "SELECT * FROM users AS u WHERE u.`username` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, username);
             ResultSet result = statement.executeQuery();

@@ -11,8 +11,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConfigModule extends AbstractModule {
-    private final String connectionString = "jdbc:mysql://localhost:3306/javadatabase?" +
-            "useUnicode=true&characterEncoding=UTF-8";
+    private final String connectionString = "jdbc:mysql://localhost:3306/javadatabase" +
+            "?useUnicode=true&characterEncoding=UTF-8";
 
     @Override
     protected void configure() {
@@ -28,7 +28,7 @@ public class ConfigModule extends AbstractModule {
         if (connection == null) {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(connectionString,
-                    "root", "");
+                    "dbuser", "123");
         }
 
         return connection;
