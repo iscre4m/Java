@@ -1,4 +1,6 @@
-package step.learning;
+package step.learning.servlets;
+
+import com.google.inject.Singleton;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -7,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+@Singleton
 public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -26,7 +29,7 @@ public class HomeServlet extends HttpServlet {
             session.removeAttribute("username");
         }
 
-        req.getRequestDispatcher("index.jsp")
+        req.getRequestDispatcher("WEB-INF/index.jsp")
                 .forward(req, resp);
     }
 }

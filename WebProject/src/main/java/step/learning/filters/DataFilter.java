@@ -1,5 +1,7 @@
 package step.learning.filters;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import step.learning.services.DataService;
 import step.learning.services.MySQLDataService;
 
@@ -7,7 +9,10 @@ import javax.servlet.*;
 import java.io.IOException;
 import java.sql.Connection;
 
+@Singleton
 public class DataFilter implements Filter {
+    @Inject
+    private DataService dataService;
     private FilterConfig filterConfig;
 
     @Override
@@ -20,7 +25,6 @@ public class DataFilter implements Filter {
                          ServletResponse servletResponse,
                          FilterChain filterChain)
             throws IOException, ServletException {
-        DataService dataService = new MySQLDataService();
         Connection connection = dataService.getConnection();
 
         if (connection == null) {

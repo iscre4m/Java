@@ -1,11 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%
+    String host = request.getContextPath();
+%>
 <html>
 <head>
     <title>Register</title>
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/style.css">
+    <link rel="stylesheet" href="<%= host %>/css/style.css">
 </head>
 <body>
-<jsp:include page="WEB-INF/navbar.jsp"/>
+<jsp:include page="navbar.jsp"/>
 <div>
     <form method="post">
         <div>
@@ -27,6 +30,6 @@
         <button type="submit">Register</button>
     </form>
 </div>
-<jsp:include page="WEB-INF/footer.jsp"/>
+<jsp:include page="footer.jsp"/>
 </body>
 </html>

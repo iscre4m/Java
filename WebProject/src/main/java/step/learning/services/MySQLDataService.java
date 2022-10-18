@@ -1,14 +1,16 @@
 package step.learning.services;
 
+import com.google.inject.Singleton;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 
+@Singleton
 public class MySQLDataService implements DataService {
-    private final String connectionString = "jdbc:mysql://localhost:3306/JavaDatabase" +
+    private final String connectionString = "jdbc:mysql://localhost:3306/javadatabase" +
             "?useUnicode=true&characterEncoding=UTF-8";
-    private final String dbUser = "restricted_user";
-    private final String dbPass = "r_user_pass";
+    private final String dbUser = "root";
+    private final String dbPass = "";
     private Connection connection;
 
     @Override

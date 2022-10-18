@@ -1,4 +1,6 @@
-package step.learning;
+package step.learning.servlets;
+
+import com.google.inject.Singleton;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -7,11 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+@Singleton
 public class RegisterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        req.getRequestDispatcher("register.jsp")
+        req.getRequestDispatcher("WEB-INF/register.jsp")
                 .forward(req, resp);
     }
 
@@ -29,6 +32,6 @@ public class RegisterServlet extends HttpServlet {
         session.setAttribute("name", name);
         session.setAttribute("username", username);
 
-        resp.sendRedirect("index");
+        resp.sendRedirect("http://localhost:8080/WebProject/");
     }
 }
