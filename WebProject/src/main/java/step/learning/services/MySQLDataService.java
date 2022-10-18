@@ -9,8 +9,8 @@ import java.sql.DriverManager;
 public class MySQLDataService implements DataService {
     private final String connectionString = "jdbc:mysql://localhost:3306/javadatabase" +
             "?useUnicode=true&characterEncoding=UTF-8";
-    private final String dbUser = "root";
-    private final String dbPass = "";
+    private final String dbUser = "dbuser";
+    private final String dbPass = "123";
     private Connection connection;
 
     @Override
