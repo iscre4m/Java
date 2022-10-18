@@ -1,4 +1,4 @@
-package step.learning.services;
+package step.learning.services.data;
 
 import java.sql.Connection;
 

@@ -2,8 +2,7 @@ package step.learning.filters;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import step.learning.services.DataService;
-import step.learning.services.MySQLDataService;
+import step.learning.services.data.DataService;
 
 import javax.servlet.*;
 import java.io.IOException;

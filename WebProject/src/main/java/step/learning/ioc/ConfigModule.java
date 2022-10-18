@@ -1,8 +1,8 @@
 package step.learning.ioc;
 
 import com.google.inject.AbstractModule;
-import step.learning.services.DataService;
-import step.learning.services.MySQLDataService;
+import step.learning.services.data.DataService;
+import step.learning.services.data.MySQLDataService;
 
 public class ConfigModule extends AbstractModule {
     @Override
