@@ -22,10 +22,10 @@ public class HomeServlet extends HttpServlet {
         req.setAttribute("name", name);
         req.setAttribute("username", username);
 
-        if(name != null) {
+        if (name != null) {
             session.removeAttribute("name");
         }
-        if(username != null) {
+        if (username != null) {
             session.removeAttribute("username");
         }
 

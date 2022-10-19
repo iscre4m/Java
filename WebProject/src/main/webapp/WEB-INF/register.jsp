@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="<%= host %>/css/style.css">
 </head>
 <body>
-<jsp:include page="navbar.jsp"/>
+<jsp:include page="/WEB-INF/navbar.jsp"/>
 <div>
     <form method="post">
         <div>
@@ -30,6 +30,6 @@
         <button type="submit">Register</button>
     </form>
 </div>
-<jsp:include page="footer.jsp"/>
+<jsp:include page="/WEB-INF/footer.jsp"/>
 </body>
 </html>
