@@ -20,16 +20,22 @@ body > * {
 nav {
     min-height: 3rem;
     background-color: #242529;
+    display: flex;
+    justify-content: space-between;
 }
 
 nav > ul {
     list-style-type: none;
-    display: flex;
+    display: inline-flex;
     padding: 0;
 }
 
 li {
     margin-left: 1em;
+}
+
+li:last-child {
+    margin-right: 1em;
 }
 
 li > a {

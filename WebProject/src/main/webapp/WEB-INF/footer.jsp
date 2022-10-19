@@ -2,3 +2,5 @@
 <footer>
     &copy; IT Step Academy 2019-<%= LocalDate.now().getYear() %>
 </footer>
+</body>
+</html>
