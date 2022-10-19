@@ -18,7 +18,7 @@
         No data to hash
     </p>
     <% } %>
-    <form method="post">
+    <form>
         <div>
             <label for="data">Data to hash</label>
             <input type="text" id="data" name="data"/>
