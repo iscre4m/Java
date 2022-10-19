@@ -1,10 +1,7 @@
 package step.learning.ioc;
 
 import com.google.inject.servlet.ServletModule;
-import step.learning.filters.AuthFilter;
-import step.learning.filters.CharsetFilter;
-import step.learning.filters.DataFilter;
-import step.learning.filters.DemoFilter;
+import step.learning.filters.*;
 import step.learning.servlets.*;
 
 public class ConfigServlets extends ServletModule {
@@ -13,6 +10,7 @@ public class ConfigServlets extends ServletModule {
         filter("/*").through(CharsetFilter.class);
         filter("/*").through(DataFilter.class);
         filter("/*").through(AuthFilter.class);
+        filter("/*").through(LogoutFilter.class);
         filter("/*").through(DemoFilter.class);
 
         serve("/register").with(RegisterServlet.class);

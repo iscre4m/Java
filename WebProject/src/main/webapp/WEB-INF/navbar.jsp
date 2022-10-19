@@ -26,7 +26,12 @@
         </li>
         <% } else { %>
         <li>
-            <a href="logout">LOGOUT</a>
+            <form>
+                <input type="hidden" name="logout" value="navbar-logout"/>
+                <button type="submit">
+                    LOGOUT
+                </button>
+            </form>
         </li>
         <% } %>
     </ul>

@@ -37,7 +37,7 @@ public class AuthFilter implements Filter {
         HttpSession session = request.getSession();
 
         if (request.getMethod().equalsIgnoreCase("POST")) {
-            if ("navbar-auth-form".equals(request.getParameter("form-id"))) {
+            if ("navbar-auth-form".equals(request.getParameter("auth-form"))) {
                 String username = request.getParameter("username");
                 String password = request.getParameter("password");
 

@@ -83,6 +83,10 @@ form > div {
     width: 100%;
 }
 
+li > form {
+    margin: 0;
+}
+
 label {
     margin-bottom: 0.5em;
 }
@@ -115,6 +119,12 @@ button[type=submit] {
     border-radius: 0.5em;
 }
 
-main>ul {
+li > form > button[type=submit] {
+    padding: 0;
+    width: 100%;
+    min-width: 100%;
+}
+
+main > ul {
     padding: 0;
 }
