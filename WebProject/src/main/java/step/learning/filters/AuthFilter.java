@@ -36,6 +36,18 @@ public class AuthFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpSession session = request.getSession();
 
+        String logout = request.getParameter("logout");
+
+        if (logout != null) {
+            if ("navbar-logout".equals(logout)) {
+
+                session.removeAttribute("userId");
+
+                response.sendRedirect("http://localhost:8080/WebProject/");
+                return;
+            }
+        }
+
         if (request.getMethod().equalsIgnoreCase("POST")) {
             if ("navbar-auth-form".equals(request.getParameter("auth-form"))) {
                 String username = request.getParameter("username");

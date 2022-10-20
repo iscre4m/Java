@@ -10,7 +10,6 @@ public class ConfigServlets extends ServletModule {
         filter("/*").through(CharsetFilter.class);
         filter("/*").through(DataFilter.class);
         filter("/*").through(AuthFilter.class);
-        filter("/*").through(LogoutFilter.class);
         filter("/*").through(DemoFilter.class);
 
         serve("/register").with(RegisterServlet.class);
