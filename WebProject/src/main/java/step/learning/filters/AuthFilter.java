@@ -43,7 +43,7 @@ public class AuthFilter implements Filter {
 
                 session.removeAttribute("userId");
 
-                response.sendRedirect("http://localhost:8080/WebProject/");
+                response.sendRedirect(request.getContextPath());
                 return;
             }
         }
@@ -61,7 +61,7 @@ public class AuthFilter implements Filter {
                     session.setAttribute("userId", user.getId());
                 }
 
-                response.sendRedirect("http://localhost:8080/WebProject/");
+                response.sendRedirect(request.getContextPath());
                 return;
             }
         }
@@ -74,7 +74,7 @@ public class AuthFilter implements Filter {
             session.removeAttribute("authError");
         }
         if (userId != null) {
-            request.setAttribute("userId", userId);
+            request.setAttribute("user", userDAO.getUserById(userId));
         }
 
         filterChain.doFilter(servletRequest, servletResponse);

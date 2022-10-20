@@ -1,9 +1,10 @@
-<jsp:include page="/WEB-INF/header.jsp"/>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="step.learning.entities.User" %>
 <%
     String name = (String) request.getAttribute("name");
     String username = (String) request.getAttribute("username");
     String authError = (String) request.getAttribute("authError");
-    String userId = (String) request.getAttribute("userId");
+    User user = (User) request.getAttribute("user");
 %>
 <main>
     <% if (authError == null) { %>
@@ -18,9 +19,12 @@
         Username: <%= username %>
     </p>
     <% } %>
-    <% if (userId != null && !userId.equals("")) { %>
+    <% if (user != null) { %>
     <p>
-        User ID: <%= userId %>
+        Username: <%= user.getUsername() %>
+    </p>
+    <p>
+        Name: <%= user.getName() %>
     </p>
     <% } %>
     <% } else { %>
@@ -29,4 +33,3 @@
     </h1>
     <% } %>
 </main>
-<jsp:include page="/WEB-INF/footer.jsp"/>

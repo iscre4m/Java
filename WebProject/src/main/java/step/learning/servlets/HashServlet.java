@@ -34,7 +34,8 @@ public class HashServlet extends HttpServlet {
             }
         }
 
-        req.getRequestDispatcher("WEB-INF/hash.jsp")
+        req.setAttribute("pageBody", "hash.jsp");
+        req.getRequestDispatcher("WEB-INF/_layout.jsp")
                 .forward(req, resp);
     }
 }

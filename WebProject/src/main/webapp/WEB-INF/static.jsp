@@ -1,5 +1,4 @@
-<jsp:include page="/WEB-INF/header.jsp"/>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <main>
     <h1>Не удалось подключиться к базе данных</h1>
 </main>
-<jsp:include page="/WEB-INF/footer.jsp"/>

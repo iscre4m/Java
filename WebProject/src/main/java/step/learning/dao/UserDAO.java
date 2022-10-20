@@ -74,7 +74,7 @@ public class UserDAO {
                 return result.getInt(1) == 0;
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("UserDAO::isUsernameUnique(): " + ex.getMessage());
             System.out.printf("Command: %s%n", sqlCommand);
         }
 
@@ -106,8 +106,32 @@ public class UserDAO {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("UserDAO::getUserByCredentials(): " + ex.getMessage());
             System.out.printf("Command: %s%n", sqlCommand);
+        }
+
+        return null;
+    }
+
+    /**
+     * Retrieves user with specified id from database
+     * @param userId user's id in database
+     * @return user as entity or null
+     */
+    public User getUserById(String userId) {
+        String sqlCommand = "SELECT u.* FROM users AS u " +
+                "WHERE u.`id`= ?";
+
+        try(PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
+            statement.setString(1, userId);
+            ResultSet result = statement.executeQuery();
+            if(result.next()) {
+                return new User(result);
+            }
+        } catch (SQLException ex) {
+            System.out.println("UserDAO::getUserById(): " + ex.getMessage());
+            System.out.printf("Command: %s%n", sqlCommand);
+            System.out.println("User ID: " + userId);
         }
 
         return null;
@@ -116,6 +140,7 @@ public class UserDAO {
     public User getUserByCredentialsOld(String username, String password) {
         String sqlCommand = "SELECT * FROM users AS u " +
                 "WHERE u.`username` = ? AND u.`password` = ?";
+
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, username);
             statement.setString(2, getPasswordHash(password, ""));
@@ -124,7 +149,7 @@ public class UserDAO {
                 return new User(result);
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("UserDAO::getUserByCredentialsOld(): " + ex.getMessage());
             System.out.printf("Command: %s%n", sqlCommand);
         }
 

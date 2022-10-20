@@ -1,4 +1,4 @@
-<jsp:include page="/WEB-INF/header.jsp"/>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <div>
     <form method="post">
         <div>
@@ -13,4 +13,3 @@
         <button type="submit">Login</button>
     </form>
 </div>
-<jsp:include page="/WEB-INF/footer.jsp"/>

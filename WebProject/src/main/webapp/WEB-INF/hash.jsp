@@ -5,13 +5,6 @@
     String md5Hash = (String) request.getAttribute("md5Hash");
     String sha1Hash = (String) request.getAttribute("sha1Hash");
 %>
-<html>
-<head>
-    <title>Hash</title>
-    <link rel="stylesheet" href="<%= contextPath %>/css/style.css">
-</head>
-<body>
-<jsp:include page="/WEB-INF/navbar.jsp"/>
 <main>
     <% if (emptyData != null && emptyData) { %>
     <p>
@@ -36,6 +29,3 @@
     </p>
     <% } %>
 </main>
-<jsp:include page="/WEB-INF/footer.jsp"/>
-</body>
-</html>

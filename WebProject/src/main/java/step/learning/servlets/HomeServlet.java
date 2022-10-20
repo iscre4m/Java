@@ -29,7 +29,8 @@ public class HomeServlet extends HttpServlet {
             session.removeAttribute("username");
         }
 
-        req.getRequestDispatcher("WEB-INF/index.jsp")
+        req.setAttribute("pageBody", "index.jsp");
+        req.getRequestDispatcher("WEB-INF/_layout.jsp")
                 .forward(req, resp);
     }
 }

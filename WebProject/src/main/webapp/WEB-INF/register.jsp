@@ -1,6 +1,14 @@
-<jsp:include page="/WEB-INF/header.jsp"/>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%
+    String regError = (String) request.getAttribute("regError");
+%>
 <div>
     <form method="post">
+        <% if (regError != null) { %>
+        <h4>
+            <%= regError %>
+        </h4>
+        <% } %>
         <div>
             <label for="username">Username</label>
             <input type="text" id="username" name="username">
@@ -20,4 +28,3 @@
         <button type="submit">Register</button>
     </form>
 </div>
-<jsp:include page="/WEB-INF/footer.jsp"/>

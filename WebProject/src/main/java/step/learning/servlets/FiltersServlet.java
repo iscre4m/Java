@@ -30,7 +30,8 @@ public class FiltersServlet extends HttpServlet {
             System.out.println(ex.getMessage());
         }
         req.setAttribute("usernames", usernames.toArray(new String[0]));
-        req.getRequestDispatcher("WEB-INF/filters.jsp")
+        req.setAttribute("pageBody", "filters.jsp");
+        req.getRequestDispatcher("WEB-INF/_layout.jsp")
                 .forward(req, resp);
     }
 }
