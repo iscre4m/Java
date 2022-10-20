@@ -25,10 +25,23 @@ public class RegisterServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         HttpSession session = req.getSession();
+
         String regError = (String) session.getAttribute("regError");
         if (regError != null) {
             req.setAttribute("regError", regError);
             session.removeAttribute("regError");
+        }
+
+        String username = (String) session.getAttribute("username");
+        if (username != null) {
+            req.setAttribute("username", username);
+            session.removeAttribute("username");
+        }
+
+        String name = (String) session.getAttribute("name");
+        if (name != null) {
+            req.setAttribute("name", name);
+            session.removeAttribute("name");
         }
 
         req.setAttribute("pageBody", "register.jsp");
@@ -54,7 +67,7 @@ public class RegisterServlet extends HttpServlet {
                 throw new Exception("Spaces in username not allowed");
             }
             if (!userDAO.isUsernameUnique(username)) {
-                throw new Exception("Username is already in use");
+                throw new Exception("Username already in use");
             }
             if (!password.equals(confirmPassword)) {
                 throw new Exception("Passwords don't match");
@@ -69,6 +82,8 @@ public class RegisterServlet extends HttpServlet {
             }
         } catch (Exception ex) {
             session.setAttribute("regError", ex.getMessage());
+            session.setAttribute("username", username);
+            session.setAttribute("name", name);
             resp.sendRedirect(req.getRequestURI());
             return;
         }

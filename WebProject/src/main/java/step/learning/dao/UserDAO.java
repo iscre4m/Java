@@ -31,7 +31,7 @@ public class UserDAO {
     /**
      * Inserts user to database
      *
-     * @param user data to insert
+     * @param user to insert
      * @return user ID
      */
     public String add(User user) {
@@ -60,7 +60,7 @@ public class UserDAO {
     /**
      * Checks if username is unique
      *
-     * @param username string to check
+     * @param username to check
      * @return true if login is unique
      */
     public boolean isUsernameUnique(String username) {
@@ -115,17 +115,18 @@ public class UserDAO {
 
     /**
      * Retrieves user with specified id from database
-     * @param userId user's id in database
+     *
+     * @param userId in database
      * @return user as entity or null
      */
     public User getUserById(String userId) {
         String sqlCommand = "SELECT u.* FROM users AS u " +
                 "WHERE u.`id`= ?";
 
-        try(PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
+        try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, userId);
             ResultSet result = statement.executeQuery();
-            if(result.next()) {
+            if (result.next()) {
                 return new User(result);
             }
         } catch (SQLException ex) {
