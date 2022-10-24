@@ -128,3 +128,7 @@ li > form > button[type=submit] {
 main > ul {
     padding: 0;
 }
+
+input[type=file] {
+
+}

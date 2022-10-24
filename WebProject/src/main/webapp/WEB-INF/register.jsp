@@ -5,7 +5,7 @@
     String name = (String) request.getAttribute("name");
 %>
 <div>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <% if (regError != null) { %>
         <h4>
             <%= regError %>
@@ -26,6 +26,10 @@
         <div>
             <label for="name">Name</label>
             <input type="text" id="name" name="name" value="<%= name == null ? "" : name %>">
+        </div>
+        <div>
+            <label for="avatar">Avatar</label>
+            <input type="file" id="avatar" name="avatar"/>
         </div>
         <button type="submit">Register</button>
     </form>

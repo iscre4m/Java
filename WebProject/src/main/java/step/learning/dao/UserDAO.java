@@ -38,8 +38,8 @@ public class UserDAO {
         user.setId(UUID.randomUUID().toString());
         user.setSalt(hashService.hash(UUID.randomUUID().toString()));
         String sqlCommand = "INSERT INTO users" +
-                "(`id`, `username`, `password`, `salt`, `name`)" +
-                "VALUES (?, ?, ?, ?, ?)";
+                "(`id`, `username`, `password`, `salt`, `name`, `avatar`)" +
+                "VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, user.getId());
@@ -47,6 +47,7 @@ public class UserDAO {
             statement.setString(3, getPasswordHash(user.getPassword(), user.getSalt()));
             statement.setString(4, user.getSalt());
             statement.setString(5, user.getName());
+            statement.setString(6, user.getAvatar());
             statement.executeUpdate();
         } catch (SQLException ex) {
             System.out.printf("Insertion error: %s%n", ex.getMessage());

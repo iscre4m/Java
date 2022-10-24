@@ -6,20 +6,21 @@ import step.learning.dao.UserDAO;
 import step.learning.entities.User;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.UUID;
 
+@WebServlet("/register")
+@MultipartConfig
 @Singleton
 public class RegisterServlet extends HttpServlet {
-    private final UserDAO userDAO;
-
     @Inject
-    public RegisterServlet(UserDAO userDAO) {
-        this.userDAO = userDAO;
-    }
+    private UserDAO userDAO;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -73,10 +74,33 @@ public class RegisterServlet extends HttpServlet {
                 throw new Exception("Passwords don't match");
             }
             // endregion
+
+            // region Uploading
+            Part avatar = req.getPart("avatar");
+            String avatarName = null;
+            if (avatar.getSize() > 0) {
+                String fileName = avatar.getSubmittedFileName();
+                int dotIndex = fileName.lastIndexOf('.');
+                if (dotIndex == -1) {
+                    throw new Exception("Files without extension now allowed");
+                }
+                String extension = fileName.substring(dotIndex);
+                if (!Arrays.asList(new String[]{".jpg", ".png", ".bmp"})
+                        .contains(extension)) {
+                    throw new Exception("Unsupported file type: " + extension);
+                }
+                avatarName = UUID.randomUUID() + extension;
+                String path = req.getServletContext().getRealPath("/");
+                File uploaded = new File(path + "/../Uploads/" + avatarName);
+                Files.copy(avatar.getInputStream(), uploaded.toPath());
+            }
+            // endregion
+
             User user = new User();
             user.setUsername(username);
             user.setPassword(password);
             user.setName(name);
+            user.setAvatar(avatarName);
             if (userDAO.add(user) == null) {
                 throw new Exception("Server error, try again later");
             }
