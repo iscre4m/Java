@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import step.learning.dao.UserDAO;
 import step.learning.entities.User;
+import step.learning.services.mime.MimeService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -12,7 +13,6 @@ import javax.servlet.http.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.UUID;
 
 @WebServlet("/register")
@@ -21,6 +21,8 @@ import java.util.UUID;
 public class RegisterServlet extends HttpServlet {
     @Inject
     private UserDAO userDAO;
+    @Inject
+    private MimeService mimeService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -85,8 +87,7 @@ public class RegisterServlet extends HttpServlet {
                     throw new Exception("Files without extension now allowed");
                 }
                 String extension = fileName.substring(dotIndex);
-                if (!Arrays.asList(new String[]{".jpg", ".png", ".bmp"})
-                        .contains(extension)) {
+                if (!mimeService.isImage(extension)) {
                     throw new Exception("Unsupported file type: " + extension);
                 }
                 avatarName = UUID.randomUUID() + extension;

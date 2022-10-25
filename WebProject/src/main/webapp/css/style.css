@@ -27,7 +27,9 @@ nav {
 nav > ul {
     list-style-type: none;
     display: inline-flex;
+    align-items: center;
     padding: 0;
+    margin: 0;
 }
 
 li {
@@ -129,6 +131,8 @@ main > ul {
     padding: 0;
 }
 
-input[type=file] {
-
+a>img {
+    max-height: 2em;
+    max-width: 2em;
+    border-radius: 180px;
 }

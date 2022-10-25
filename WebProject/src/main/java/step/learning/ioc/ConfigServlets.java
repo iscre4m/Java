@@ -16,6 +16,8 @@ public class ConfigServlets extends ServletModule {
         serve("/login").with(LoginServlet.class);
         serve("/filter").with(FiltersServlet.class);
         serve("/hash").with(HashServlet.class);
+        serve("/image/*").with(ImagesServlet.class);
+        serve("/profile").with(ProfileServlet.class);
         serve("/").with(HomeServlet.class);
     }
 }

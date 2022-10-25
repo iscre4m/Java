@@ -2,6 +2,7 @@
 <%@ page import="step.learning.entities.User" %>
 <%
     String[] links = {"filter", "hash"};
+    String contextPath = request.getContextPath();
     User user = (User) request.getAttribute("user");
 %>
 <nav>
@@ -22,12 +23,19 @@
     <ul>
         <% if (user == null) { %>
         <li>
-            <a href="register">REGISTER</a>
+            <a href="<%= contextPath %>/register">REGISTER</a>
         </li>
         <li>
-            <a href="login">LOGIN</a>
+            <a href="<%= contextPath %>/login">LOGIN</a>
         </li>
         <% } else { %>
+        <li>
+            <a href="<%= contextPath %>/profile">
+                <img src="<%= contextPath %>/image/<%= user.getAvatar() %>"
+                     alt="<%= user.getUsername() %>"
+                />
+            </a>
+        </li>
         <li>
             <form>
                 <input type="hidden" name="logout" value="navbar-logout"/>
