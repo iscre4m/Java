@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
-    String contextPath = request.getContextPath();
     Boolean emptyData = (Boolean) request.getAttribute("emptyData");
     String md5Hash = (String) request.getAttribute("md5Hash");
     String sha1Hash = (String) request.getAttribute("sha1Hash");

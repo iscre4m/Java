@@ -8,7 +8,7 @@
 <nav>
     <ul>
         <li>
-            <a href="<%= request.getContextPath() %>">
+            <a href="<%= contextPath %>">
                 HOME
             </a>
         </li>

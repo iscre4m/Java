@@ -60,6 +60,7 @@ public class RegisterServlet extends HttpServlet {
         String password = req.getParameter("password");
         String confirmPassword = req.getParameter("confirmPassword");
         String name = req.getParameter("name");
+        String userId;
 
         try {
             // region validation
@@ -102,7 +103,7 @@ public class RegisterServlet extends HttpServlet {
             user.setPassword(password);
             user.setName(name);
             user.setAvatar(avatarName);
-            if (userDAO.add(user) == null) {
+            if ((userId = userDAO.add(user)) == null) {
                 throw new Exception("Server error, try again later");
             }
         } catch (Exception ex) {
@@ -113,7 +114,7 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
 
-        session.setAttribute("regOk", "Registration successful");
+        session.setAttribute("userId", userId);
         resp.sendRedirect(req.getContextPath());
     }
 }

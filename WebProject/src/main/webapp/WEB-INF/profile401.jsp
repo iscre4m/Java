@@ -1,4 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<div>
+<main>
     <h1>Authorize to view profile</h1>
-</div>
+</main>

@@ -3,6 +3,6 @@
 <%
     User user = (User) request.getAttribute("user");
 %>
-<div>
+<main>
     <h1>User Profile</h1>
-</div>
+</main>

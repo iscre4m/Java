@@ -4,8 +4,8 @@
     String username = (String) request.getAttribute("username");
     String name = (String) request.getAttribute("name");
 %>
-<div>
-    <form method="post" enctype="multipart/form-data">
+<main>
+    <form method="post" enctype="multipart/form-data" class="auth-form">
         <% if (regError != null) { %>
         <h4>
             <%= regError %>
@@ -33,4 +33,4 @@
         </div>
         <button type="submit">Register</button>
     </form>
-</div>
+</main>

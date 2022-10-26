@@ -49,7 +49,7 @@ public class AuthFilter implements Filter {
         }
 
         if (request.getMethod().equalsIgnoreCase("POST")) {
-            if ("navbar-auth-form".equals(request.getParameter("auth-form"))) {
+            if ("auth-form".equals(request.getParameter("auth-form"))) {
                 String username = request.getParameter("username");
                 String password = request.getParameter("password");
 
@@ -57,6 +57,9 @@ public class AuthFilter implements Filter {
 
                 if (user == null) {
                     session.setAttribute("authError", "Incorrect username or password");
+                    session.setAttribute("username", username);
+                    response.sendRedirect(request.getRequestURI());
+                    return;
                 } else {
                     session.setAttribute("userId", user.getId());
                 }
@@ -67,11 +70,16 @@ public class AuthFilter implements Filter {
         }
 
         String authError = (String) session.getAttribute("authError");
+        String username = (String) session.getAttribute("username");
         String userId = (String) session.getAttribute("userId");
 
         if (authError != null) {
             request.setAttribute("authError", authError);
             session.removeAttribute("authError");
+        }
+        if(username != null) {
+            request.setAttribute("username", username);
+            session.removeAttribute("username");
         }
         if (userId != null) {
             request.setAttribute("user", userDAO.getUserById(userId));
