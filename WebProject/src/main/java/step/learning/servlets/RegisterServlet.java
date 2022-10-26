@@ -117,4 +117,14 @@ public class RegisterServlet extends HttpServlet {
         session.setAttribute("userId", userId);
         resp.sendRedirect(req.getContextPath());
     }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        User user = (User) req.getAttribute("user");
+        User editedUser = new User();
+        editedUser.setId(user.getId());
+        editedUser.setName(req.getParameter("name"));
+        userDAO.update(editedUser);
+        resp.getWriter().print("PUT works " + req.getParameter("name") + " " + user.getId());
+    }
 }

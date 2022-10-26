@@ -59,6 +59,34 @@ public class UserDAO {
     }
 
     /**
+     * Updates user data that are not null fields in 'editedUser' parameter
+     *
+     * @param editedUser with id and fields to update
+     * @return true if updated successfully
+     */
+    public boolean update(User editedUser) {
+        if (editedUser == null || editedUser.getId() == null) {
+            return false;
+        }
+
+        String sqlCommand = "UPDATE users AS u " +
+                "SET  u.`name` = ? " +
+                "WHERE u.`id` = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
+            statement.setString(1, editedUser.getName());
+            statement.setString(2, editedUser.getId());
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("Update error: " + ex.getMessage());
+            System.out.println("Command: " + sqlCommand);
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Checks if username is unique
      *
      * @param username to check

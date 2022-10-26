@@ -31,7 +31,8 @@
         <% } else { %>
         <li>
             <a href="<%= contextPath %>/profile">
-                <img src="<%= contextPath %>/image/<%= user.getAvatar() %>"
+                <img class="navbar-avatar"
+                     src="<%= contextPath %>/image/<%= user.getAvatar() %>"
                      alt="<%= user.getUsername() %>"
                 />
             </a>

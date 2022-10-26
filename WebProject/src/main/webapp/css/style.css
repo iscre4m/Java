@@ -131,8 +131,21 @@ main > ul {
     padding: 0;
 }
 
-a>img {
+.navbar-avatar {
     max-height: 2em;
     max-width: 2em;
     border-radius: 180px;
+}
+
+.profile-avatar {
+    max-height: 20em;
+    max-width: 20em;
+}
+
+legend {
+    margin: auto;
+}
+
+fieldset>div>span:first-child {
+    margin-right: 1em;
 }
