@@ -142,10 +142,25 @@ main > ul {
     max-width: 20em;
 }
 
+fieldset {
+    min-width: 10em;
+    width: 15%;
+    margin-top: 1em;
+}
+
 legend {
     margin: auto;
 }
 
-fieldset>div>span:first-child {
-    margin-right: 1em;
+.field {
+    display: flex;
+    justify-content: space-between;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.m-auto {
+    margin: auto;
 }

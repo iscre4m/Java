@@ -1,21 +1,41 @@
 <%@ page import="step.learning.entities.User" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
-    String contextPath = (String) request.getContextPath();
+    String contextPath = request.getContextPath();
     User user = (User) request.getAttribute("user");
+    String avatar = user.getAvatar();
 %>
 <main>
-    <h1>User Profile</h1>
+    <% if (avatar != null) { %>
     <img class="profile-avatar"
-         src="<%= contextPath %>/image/<%= user.getAvatar() %>"
+         src="<%= contextPath %>/image/<%= avatar %>"
          alt="<%= user.getUsername() %>"/>
+    <% } %>
     <fieldset>
         <legend>Editable</legend>
-        <div>
-            <span>Name: <b><%= user.getName() %></b></span>
-            <span class="profile-edit">&#x270E;</span>
-            <span class="profile-confirm">&#x2705;</span>
-            <span class="profile-cancel">&#x274C;</span>
+        <div class="field">
+            <div>
+                Name: <span><%= user.getName() %></span>
+            </div>
+            <div>
+                <span class="cursor-pointer profile-edit">&#x270E;</span>
+                <span class="cursor-pointer profile-confirm">&#x2705;</span>
+                <span class="cursor-pointer profile-cancel">&#x274C;</span>
+            </div>
+        </div>
+        <div class="field">
+            <div>
+                Username: <span><%= user.getUsername() %></span>
+            </div>
+            <div class="edit-icons">
+                <span class="cursor-pointer profile-edit">&#x270E;</span>
+                <span class="cursor-pointer profile-confirm">&#x2705;</span>
+                <span class="cursor-pointer profile-cancel">&#x274C;</span>
+            </div>
+        </div>
+        <div class="field">
+            <input id="avatarInput" type="file" hidden/>
+            <span id="changeAvatar" class="m-auto cursor-pointer">Change avatar</span>
         </div>
     </fieldset>
 </main>
@@ -30,24 +50,31 @@
         for (let element of document.getElementsByClassName("profile-cancel")) {
             element.addEventListener("click", cancelClick);
         }
+        const changeAvatar = document.getElementById("changeAvatar");
+        const avatarInput = document.getElementById("avatarInput");
+        changeAvatar.addEventListener("click", () => {
+            avatarInput.click()
+        });
     })
 
     const editClick = (e) => {
-        const b = e.target.closest('div').querySelector("b");
-        if (b) {
-            b.setAttribute("contenteditable", "true");
-            b.savedValue = b.innerText;
-            b.focus();
+        const fieldToEdit = e.target.closest('.field').querySelector("span");
+
+        if (fieldToEdit) {
+            fieldToEdit.setAttribute("contenteditable", "true");
+            fieldToEdit.savedValue = fieldToEdit.innerText;
+            fieldToEdit.focus();
         }
     }
 
     const confirmClick = (e) => {
-        const b = e.target.closest('div').querySelector("b");
-        if (b) {
-            b.removeAttribute("contenteditable");
-            if (b.savedValue && b.savedValue !== b.innerText) {
+        const fieldToEdit = e.target.closest('.field').querySelector("span");
+
+        if (fieldToEdit) {
+            fieldToEdit.removeAttribute("contenteditable");
+            if (fieldToEdit.savedValue && fieldToEdit.savedValue !== fieldToEdit.innerText) {
                 fetch("<%= request.getContextPath() %>/register"
-                    + "?name=" + b.innerText, {
+                    + "?name=" + fieldToEdit.innerText, {
                     method: "PUT",
                     headers: {
                         "Connection": "close"
@@ -61,12 +88,13 @@
     }
 
     const cancelClick = (e) => {
-        const b = e.target.closest('div').querySelector("b");
-        if (b) {
-            if (b.savedValue) {
-                b.innerText = b.savedValue;
+        const fieldToEdit = e.target.closest('.field').querySelector("span");
+
+        if (fieldToEdit) {
+            if (fieldToEdit.savedValue) {
+                fieldToEdit.innerText = fieldToEdit.savedValue;
             }
-            b.removeAttribute("contenteditable");
+            fieldToEdit.removeAttribute("contenteditable");
         }
     }
 </script>
