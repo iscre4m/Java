@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Singleton
@@ -68,18 +70,47 @@ public class UserDAO {
         if (editedUser == null || editedUser.getId() == null) {
             return false;
         }
+        Map<String, String> dataToEdit = new HashMap<>();
+        String name = editedUser.getName();
+        String username = editedUser.getUsername();
+        String avatar = editedUser.getAvatar();
 
-        String sqlCommand = "UPDATE users AS u " +
-                "SET  u.`name` = ? " +
-                "WHERE u.`id` = ?";
+        if (name != null) {
+            dataToEdit.put("name", name);
+        }
+        if (username != null) {
+            if (isUsernameUnique(username)) {
+                dataToEdit.put("username", username);
+            }
+        }
+        if (avatar != null) {
+            dataToEdit.put("avatar", avatar);
+        }
+        if (dataToEdit.isEmpty()) {
+            return false;
+        }
 
-        try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
-            statement.setString(1, editedUser.getName());
-            statement.setString(2, editedUser.getId());
+        StringBuilder sqlCommandBuilder = new StringBuilder("UPDATE users AS u SET ");
+        boolean commaRequired = false;
+        for (String fieldName : dataToEdit.keySet()) {
+            sqlCommandBuilder.append(String.format("%c u.`%s` = ?",
+                    (commaRequired ? ',' : ' '), fieldName)
+            );
+            commaRequired = true;
+        }
+        sqlCommandBuilder.append("WHERE u.`id` = ?");
+
+        try (PreparedStatement statement = connection.prepareStatement(sqlCommandBuilder.toString())) {
+            int pos = 1;
+            for (String fieldName : dataToEdit.keySet()) {
+                statement.setString(pos, dataToEdit.get(fieldName));
+                ++pos;
+            }
+            statement.setString(pos, editedUser.getId());
             statement.executeUpdate();
         } catch (SQLException ex) {
             System.out.println("Update error: " + ex.getMessage());
-            System.out.println("Command: " + sqlCommand);
+            System.out.println("Command: " + sqlCommandBuilder);
             return false;
         }
 

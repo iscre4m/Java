@@ -15,7 +15,7 @@
         <legend>Editable</legend>
         <div class="field">
             <div>
-                Name: <span><%= user.getName() %></span>
+                Name: <span data-field-name="name"><%= user.getName() %></span>
             </div>
             <div>
                 <span class="cursor-pointer profile-edit">&#x270E;</span>
@@ -25,7 +25,7 @@
         </div>
         <div class="field">
             <div>
-                Username: <span><%= user.getUsername() %></span>
+                Username: <span data-field-name="username"><%= user.getUsername() %></span>
             </div>
             <div class="edit-icons">
                 <span class="cursor-pointer profile-edit">&#x270E;</span>
@@ -56,9 +56,7 @@
         const avatarInput = document.getElementById("avatarInput");
         const avatarName = document.getElementById("avatarName");
 
-        changeAvatar.addEventListener("click", () => {
-            avatarInput.click()
-        });
+        changeAvatar.addEventListener("click", () => avatarInput.click());
         avatarInput.addEventListener("input", () => {
             const filePath = avatarInput.value;
             const slashIndex = filePath.lastIndexOf("\\");
@@ -82,8 +80,10 @@
         if (fieldToEdit) {
             fieldToEdit.removeAttribute("contenteditable");
             if (fieldToEdit.savedValue && fieldToEdit.savedValue !== fieldToEdit.innerText) {
-                fetch("<%= request.getContextPath() %>/register"
-                    + "?name=" + fieldToEdit.innerText, {
+                const fieldName = fieldToEdit.getAttribute("data-field-name");
+                const url = "<%= request.getContextPath() %>/register?"
+                    + fieldName + "=" + fieldToEdit.innerText;
+                fetch(url, {
                     method: "PUT",
                     headers: {
                         "Connection": "close"
@@ -91,7 +91,14 @@
                     body: ""
                 })
                     .then(r => r.text())
-                    .then(r => console.log(r));
+                    .then(r => {
+                        if (r === "Success") {
+                            location = location;
+                        } else {
+                            alert(r);
+                            fieldToEdit.innerText = fieldToEdit.savedValue;
+                        }
+                    });
             }
         }
     }

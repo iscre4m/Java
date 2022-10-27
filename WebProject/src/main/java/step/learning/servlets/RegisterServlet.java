@@ -120,11 +120,28 @@ public class RegisterServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String message;
         User user = (User) req.getAttribute("user");
         User editedUser = new User();
         editedUser.setId(user.getId());
         editedUser.setName(req.getParameter("name"));
-        userDAO.update(editedUser);
-        resp.getWriter().print("PUT works " + req.getParameter("name") + " " + user.getId());
+        String username = req.getParameter("username");
+
+        if (username != null) {
+            if (!userDAO.isUsernameUnique(username)) {
+                message = "Username " + username + " already in use";
+                resp.getWriter().print(message);
+                return;
+            }
+            editedUser.setUsername(username);
+        }
+
+        if (userDAO.update(editedUser)) {
+            message = "Success";
+        } else {
+            message = "Fail";
+        }
+
+        resp.getWriter().print(message);
     }
 }
