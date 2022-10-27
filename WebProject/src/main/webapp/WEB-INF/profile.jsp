@@ -33,9 +33,10 @@
                 <span class="cursor-pointer profile-cancel">&#x274C;</span>
             </div>
         </div>
-        <div class="field">
+        <div class="d-flex flex-column">
             <input id="avatarInput" type="file" hidden/>
             <span id="changeAvatar" class="m-auto cursor-pointer">Change avatar</span>
+            <span id="avatarName" class="m-auto"></span>
         </div>
     </fieldset>
 </main>
@@ -50,11 +51,19 @@
         for (let element of document.getElementsByClassName("profile-cancel")) {
             element.addEventListener("click", cancelClick);
         }
+
         const changeAvatar = document.getElementById("changeAvatar");
         const avatarInput = document.getElementById("avatarInput");
+        const avatarName = document.getElementById("avatarName");
+
         changeAvatar.addEventListener("click", () => {
             avatarInput.click()
         });
+        avatarInput.addEventListener("input", () => {
+            const filePath = avatarInput.value;
+            const slashIndex = filePath.lastIndexOf("\\");
+            avatarName.innerText = filePath.substring(slashIndex + 1);
+        })
     })
 
     const editClick = (e) => {
