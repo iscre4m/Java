@@ -40,8 +40,8 @@ public class UserDAO {
         user.setId(UUID.randomUUID().toString());
         user.setSalt(hashService.hash(UUID.randomUUID().toString()));
         String sqlCommand = "INSERT INTO users" +
-                "(`id`, `username`, `password`, `salt`, `name`, `avatar`)" +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+                "(`id`, `username`, `password`, `salt`, `name`, `avatar`, `email`)" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, user.getId());
@@ -50,6 +50,7 @@ public class UserDAO {
             statement.setString(4, user.getSalt());
             statement.setString(5, user.getName());
             statement.setString(6, user.getAvatar());
+            statement.setString(7, user.getEmail());
             statement.executeUpdate();
         } catch (SQLException ex) {
             System.out.printf("Insertion error: %s%n", ex.getMessage());
@@ -74,6 +75,7 @@ public class UserDAO {
         String name = editedUser.getName();
         String username = editedUser.getUsername();
         String avatar = editedUser.getAvatar();
+        String email = editedUser.getEmail();
 
         if (name != null) {
             dataToEdit.put("name", name);
@@ -86,6 +88,10 @@ public class UserDAO {
         if (avatar != null) {
             dataToEdit.put("avatar", avatar);
         }
+        if (email != null) {
+            dataToEdit.put("email", email);
+        }
+
         if (dataToEdit.isEmpty()) {
             return false;
         }

@@ -10,6 +10,7 @@ public class User {
     private String salt;
     private String name;
     private String avatar;
+    private String email;
 
     public User() {
     }
@@ -21,6 +22,7 @@ public class User {
         setSalt(result.getString("salt"));
         setName(result.getString("name"));
         setAvatar(result.getString("avatar"));
+        setEmail(result.getString("email"));
     }
 
     public String getId() {
@@ -69,5 +71,13 @@ public class User {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

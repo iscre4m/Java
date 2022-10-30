@@ -2,6 +2,7 @@ package step.learning.servlets;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import org.apache.commons.validator.routines.EmailValidator;
 import step.learning.dao.UserDAO;
 import step.learning.entities.User;
 import step.learning.services.mime.MimeService;
@@ -47,6 +48,12 @@ public class RegisterServlet extends HttpServlet {
             session.removeAttribute("name");
         }
 
+        String email = (String) session.getAttribute("email");
+        if (email != null) {
+            req.setAttribute("email", email);
+            session.removeAttribute("email");
+        }
+
         req.setAttribute("pageBody", "register.jsp");
         req.getRequestDispatcher("WEB-INF/_layout.jsp")
                 .forward(req, resp);
@@ -60,6 +67,7 @@ public class RegisterServlet extends HttpServlet {
         String password = req.getParameter("password");
         String confirmPassword = req.getParameter("confirmPassword");
         String name = req.getParameter("name");
+        String email = req.getParameter("email");
         String userId;
 
         try {
@@ -75,6 +83,9 @@ public class RegisterServlet extends HttpServlet {
             }
             if (!password.equals(confirmPassword)) {
                 throw new Exception("Passwords don't match");
+            }
+            if (!EmailValidator.getInstance().isValid(email)) {
+                throw new Exception("Invalid email");
             }
             // endregion
 
@@ -103,6 +114,7 @@ public class RegisterServlet extends HttpServlet {
             user.setPassword(password);
             user.setName(name);
             user.setAvatar(avatarName);
+            user.setEmail(email);
             if ((userId = userDAO.add(user)) == null) {
                 throw new Exception("Server error, try again later");
             }
@@ -110,6 +122,7 @@ public class RegisterServlet extends HttpServlet {
             session.setAttribute("regError", ex.getMessage());
             session.setAttribute("username", username);
             session.setAttribute("name", name);
+            session.setAttribute("email", email);
             resp.sendRedirect(req.getRequestURI());
             return;
         }
@@ -126,6 +139,7 @@ public class RegisterServlet extends HttpServlet {
         editedUser.setId(user.getId());
         editedUser.setName(req.getParameter("name"));
         String username = req.getParameter("username");
+        String email = req.getParameter("email");
 
         if (username != null) {
             if (!userDAO.isUsernameUnique(username)) {
@@ -134,6 +148,15 @@ public class RegisterServlet extends HttpServlet {
                 return;
             }
             editedUser.setUsername(username);
+        }
+
+        if (email != null) {
+            if(!EmailValidator.getInstance().isValid(email)) {
+                message = "Invalid email: " + email;
+                resp.getWriter().print(message);
+                return;
+            }
+            editedUser.setEmail(email);
         }
 
         if (userDAO.update(editedUser)) {

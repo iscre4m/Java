@@ -1,8 +1,10 @@
 <%@ page import="step.learning.entities.User" %>
+<%@ page import="java.util.Objects" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
     String contextPath = request.getContextPath();
     User user = (User) request.getAttribute("user");
+    String email = user.getEmail();
     String avatar = user.getAvatar();
 %>
 <main>
@@ -33,6 +35,18 @@
                 <span class="cursor-pointer profile-cancel">&#x274C;</span>
             </div>
         </div>
+        <% if (!Objects.equals(email, "")) { %>
+        <div class="field">
+            <div>
+                Email: <span data-field-name="email"><%= email %></span>
+            </div>
+            <div class="edit-icons">
+                <span class="cursor-pointer profile-edit">&#x270E;</span>
+                <span class="cursor-pointer profile-confirm">&#x2705;</span>
+                <span class="cursor-pointer profile-cancel">&#x274C;</span>
+            </div>
+        </div>
+        <% } %>
         <div class="d-flex flex-column">
             <input id="avatarInput" type="file" hidden/>
             <span id="changeAvatar" class="m-auto cursor-pointer">Change avatar</span>

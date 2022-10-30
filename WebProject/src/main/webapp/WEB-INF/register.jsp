@@ -3,6 +3,7 @@
     String regError = (String) request.getAttribute("regError");
     String username = (String) request.getAttribute("username");
     String name = (String) request.getAttribute("name");
+    String email = (String) request.getAttribute("email");
 %>
 <main>
     <form method="post" enctype="multipart/form-data" class="auth-form">
@@ -30,6 +31,10 @@
         <div>
             <label for="avatar">Avatar</label>
             <input type="file" id="avatar" name="avatar"/>
+        </div>
+        <div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" value="<%= email == null ? "" : email %>"/>
         </div>
         <button type="submit">Register</button>
     </form>
