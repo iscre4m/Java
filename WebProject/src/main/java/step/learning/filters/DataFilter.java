@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 import step.learning.services.data.DataService;
 
 import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.sql.Connection;
 
@@ -24,6 +25,12 @@ public class DataFilter implements Filter {
                          ServletResponse servletResponse,
                          FilterChain filterChain)
             throws IOException, ServletException {
+        String localUrl = ((HttpServletRequest) servletRequest).getServletPath();
+        if ("/img/firefox-logo.png".equalsIgnoreCase(localUrl)
+                || "/WEB-INF/static.jsp".equalsIgnoreCase(localUrl)) {
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
         Connection connection = dataService.getConnection();
 
         if (connection == null) {

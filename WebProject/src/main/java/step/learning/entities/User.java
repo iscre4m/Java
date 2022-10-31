@@ -11,6 +11,7 @@ public class User {
     private String name;
     private String avatar;
     private String email;
+    private String emailCode;
 
     public User() {
     }
@@ -23,6 +24,7 @@ public class User {
         setName(result.getString("name"));
         setAvatar(result.getString("avatar"));
         setEmail(result.getString("email"));
+        setEmailCode(result.getString("emailCode"));
     }
 
     public String getId() {
@@ -79,5 +81,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getEmailCode() {
+        return emailCode;
+    }
+
+    public void setEmailCode(String emailCode) {
+        this.emailCode = emailCode;
     }
 }

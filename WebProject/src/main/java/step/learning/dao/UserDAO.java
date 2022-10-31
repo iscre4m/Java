@@ -90,6 +90,9 @@ public class UserDAO {
         }
         if (email != null) {
             dataToEdit.put("email", email);
+            String code = UUID.randomUUID().toString().substring(0, 6);
+            editedUser.setEmailCode(code);
+            dataToEdit.put("email_code", code);
         }
 
         if (dataToEdit.isEmpty()) {
