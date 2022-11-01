@@ -24,7 +24,7 @@ public class User {
         setName(result.getString("name"));
         setAvatar(result.getString("avatar"));
         setEmail(result.getString("email"));
-        setEmailCode(result.getString("emailCode"));
+        setEmailCode(result.getString("email_code"));
     }
 
     public String getId() {

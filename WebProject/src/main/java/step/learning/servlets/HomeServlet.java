@@ -19,8 +19,6 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        emailService.send("proviryalovich@gmail.com", "Monobank", "<p>provide your credit card info</p>");
-
         req.setAttribute("pageBody", "index.jsp");
         req.getRequestDispatcher("WEB-INF/_layout.jsp")
                 .forward(req, resp);

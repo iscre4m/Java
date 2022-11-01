@@ -35,12 +35,20 @@ public class ConfirmationServlet extends HttpServlet {
                 if (!user.getEmailCode().equals(confirm)) {
                     throw new Exception("Invalid confirmation code");
                 }
+
+                if (userDAO.confirmEmail(user)) {
+                    resp.sendRedirect(req.getContextPath());
+                    return;
+                }
+
+                throw new Exception("Server error, try again later");
             } catch (Exception ex) {
-                System.out.println(ex.getMessage());
+                req.setAttribute("error", ex.getMessage());
+                req.setAttribute("savedCode", confirm);
             }
         }
 
-        req.setAttribute("pageBody", "confirm_email");
+        req.setAttribute("pageBody", "confirm_email.jsp");
         req.getRequestDispatcher("WEB-INF/_layout.jsp")
                 .forward(req, resp);
     }

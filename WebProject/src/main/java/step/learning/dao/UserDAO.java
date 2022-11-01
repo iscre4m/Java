@@ -140,6 +140,21 @@ public class UserDAO {
         return true;
     }
 
+    public boolean confirmEmail(User user) {
+        String sqlCommand = "UPDATE `users` AS u SET u.`email_code`=NULL WHERE u.`id` = ?";
+
+        try(PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
+            statement.setString(1, user.getId());
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.printf("Confirmation error: %s%n", ex.getMessage());
+            System.out.printf("Command: %s%n", sqlCommand);
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * Checks if username is unique
      *
