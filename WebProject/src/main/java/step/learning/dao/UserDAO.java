@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import step.learning.entities.User;
 import step.learning.services.data.DataService;
+import step.learning.services.email.EmailService;
 import step.learning.services.hash.HashService;
 
 import java.sql.Connection;
@@ -20,12 +21,15 @@ public class UserDAO {
     private final Connection connection;
     private final HashService hashService;
     private final DataService dataService;
+    private final EmailService emailService;
 
     @Inject
     public UserDAO(DataService dataService,
-                   @Named("SHA1HashService") HashService hashService) {
+                   @Named("SHA1HashService") HashService hashService,
+                   EmailService emailService) {
         this.dataService = dataService;
         this.hashService = hashService;
+        this.emailService = emailService;
 
         this.connection = dataService.getConnection();
     }
@@ -72,6 +76,7 @@ public class UserDAO {
             return false;
         }
         Map<String, String> dataToEdit = new HashMap<>();
+        String id = editedUser.getId();
         String name = editedUser.getName();
         String username = editedUser.getUsername();
         String avatar = editedUser.getAvatar();
@@ -115,12 +120,21 @@ public class UserDAO {
                 statement.setString(pos, dataToEdit.get(fieldName));
                 ++pos;
             }
-            statement.setString(pos, editedUser.getId());
+            statement.setString(pos, id);
             statement.executeUpdate();
         } catch (SQLException ex) {
             System.out.println("Update error: " + ex.getMessage());
             System.out.println("Command: " + sqlCommandBuilder);
             return false;
+        }
+
+        if (email != null) {
+            emailService.send(email, "Confirmation",
+                    String.format("<p>" +
+                                    "%s or " +
+                                    "<a href='https://localhost:8443/WebProject/confirm?userId=%s&confirm=%s'>link</a>" +
+                                    "</p>",
+                            editedUser.getEmailCode(), id, editedUser.getEmailCode()));
         }
 
         return true;

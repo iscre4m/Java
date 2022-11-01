@@ -18,6 +18,7 @@ public class ConfigServlets extends ServletModule {
         serve("/hash").with(HashServlet.class);
         serve("/image/*").with(ImagesServlet.class);
         serve("/profile").with(ProfileServlet.class);
+        serve("/confirm").with(ConfirmationServlet.class);
         serve("/").with(HomeServlet.class);
     }
 }
