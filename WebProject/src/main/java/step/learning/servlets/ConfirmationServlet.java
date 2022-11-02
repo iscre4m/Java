@@ -49,7 +49,6 @@ public class ConfirmationServlet extends HttpServlet {
         } else if (user != null && userDAO.isEmailConfirmed(user)) {
             view = "email_confirmed";
             req.setAttribute("confirmed", true);
-
         }
 
         req.setAttribute("pageBody", view + ".jsp");

@@ -11,6 +11,7 @@ public class ConfigServlets extends ServletModule {
         filter("/*").through(DataFilter.class);
         filter("/*").through(AuthFilter.class);
         filter("/*").through(DemoFilter.class);
+        filter("/*").through(StatusFilter.class);
 
         serve("/register").with(RegisterServlet.class);
         serve("/login").with(LoginServlet.class);

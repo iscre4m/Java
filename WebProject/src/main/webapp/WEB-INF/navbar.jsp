@@ -4,6 +4,7 @@
     String[] links = {"filter", "hash"};
     String contextPath = request.getContextPath();
     User user = (User) request.getAttribute("user");
+    Boolean confirmationNeeded = (Boolean) request.getAttribute("confirmationNeeded");
 %>
 <nav>
     <ul>
@@ -29,7 +30,7 @@
             <a href="<%= contextPath %>/login">LOGIN</a>
         </li>
         <% } else { %>
-        <% if (true) { %>
+        <% if (confirmationNeeded) { %>
         <li>
             <a href="<%= contextPath %>/confirm"
                title="Email not confirmed">
