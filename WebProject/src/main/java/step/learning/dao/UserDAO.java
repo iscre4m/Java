@@ -140,10 +140,14 @@ public class UserDAO {
         return true;
     }
 
+    public boolean isEmailConfirmed(User user) {
+        return user.getEmailCode() == null;
+    }
+
     public boolean confirmEmail(User user) {
         String sqlCommand = "UPDATE `users` AS u SET u.`email_code`=NULL WHERE u.`id` = ?";
 
-        try(PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
+        try(PreparedStatement statement = dataService.getConnection().prepareStatement(sqlCommand)) {
             statement.setString(1, user.getId());
             statement.executeUpdate();
         } catch (SQLException ex) {

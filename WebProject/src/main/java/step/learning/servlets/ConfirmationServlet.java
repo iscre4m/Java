@@ -20,35 +20,39 @@ public class ConfirmationServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String userId = req.getParameter("userId");
         String confirm = req.getParameter("confirm");
+        String view = "confirm_email";
+        User user = userId == null
+                ? (User) req.getAttribute("user")
+                : userDAO.getUserById(userId);
 
         if (confirm != null) {
-            User user = userId == null
-                    ? (User) req.getAttribute("user")
-                    : userDAO.getUserById(userId);
             try {
                 if (user == null) {
                     throw new Exception("Not authorized");
                 }
-                if (user.getEmailCode() == null) {
+                if (userDAO.isEmailConfirmed(user)) {
                     throw new Exception("Email already confirmed");
                 }
                 if (!user.getEmailCode().equals(confirm)) {
                     throw new Exception("Invalid confirmation code");
                 }
-
-                if (userDAO.confirmEmail(user)) {
-                    resp.sendRedirect(req.getContextPath());
-                    return;
+                if (!userDAO.confirmEmail(user)) {
+                    throw new Exception("Server error, try again later");
                 }
 
-                throw new Exception("Server error, try again later");
+                view = "email_confirmed";
+                req.setAttribute("confirmed", true);
             } catch (Exception ex) {
                 req.setAttribute("error", ex.getMessage());
                 req.setAttribute("savedCode", confirm);
             }
+        } else if (user != null && userDAO.isEmailConfirmed(user)) {
+            view = "email_confirmed";
+            req.setAttribute("confirmed", true);
+
         }
 
-        req.setAttribute("pageBody", "confirm_email.jsp");
+        req.setAttribute("pageBody", view + ".jsp");
         req.getRequestDispatcher("WEB-INF/_layout.jsp")
                 .forward(req, resp);
     }

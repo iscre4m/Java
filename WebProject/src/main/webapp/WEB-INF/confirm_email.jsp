@@ -5,7 +5,7 @@
     String error = (String) request.getAttribute("error");
     String savedCode = (String) request.getAttribute("savedCode");
 %>
-<main class="confirm-email">
+<main>
     <h1>Email confirmation</h1>
     <% if (user == null) { %>
     <p>Authorize to confirm email</p>

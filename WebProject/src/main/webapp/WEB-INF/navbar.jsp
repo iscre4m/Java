@@ -29,6 +29,14 @@
             <a href="<%= contextPath %>/login">LOGIN</a>
         </li>
         <% } else { %>
+        <% if (true) { %>
+        <li>
+            <a href="<%= contextPath %>/confirm"
+               title="Email not confirmed">
+                &#x1F4E7;
+            </a>
+        </li>
+        <% } %>
         <li>
             <a href="<%= contextPath %>/profile">
                 <img class="navbar-avatar"
