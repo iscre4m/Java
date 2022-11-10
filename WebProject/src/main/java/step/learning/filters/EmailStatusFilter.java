@@ -9,7 +9,7 @@ import javax.servlet.*;
 import java.io.IOException;
 
 @Singleton
-public class StatusFilter implements Filter {
+public class EmailStatusFilter implements Filter {
     private FilterConfig filterConfig;
     @Inject
     private UserDAO userDAO;
