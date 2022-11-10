@@ -43,9 +43,10 @@ public class UserDAO {
     public String add(User user) {
         user.setId(UUID.randomUUID().toString());
         user.setSalt(hashService.hash(UUID.randomUUID().toString()));
+        user.setEmailCode(UUID.randomUUID().toString().substring(0, 6));
         String sqlCommand = "INSERT INTO users" +
-                "(`id`, `username`, `password`, `salt`, `name`, `avatar`, `email`)" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                "(`id`, `username`, `password`, `salt`, `name`, `avatar`, `email`, `email_code`)" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, user.getId());
@@ -55,6 +56,7 @@ public class UserDAO {
             statement.setString(5, user.getName());
             statement.setString(6, user.getAvatar());
             statement.setString(7, user.getEmail());
+            statement.setString(8, user.getEmailCode());
             statement.executeUpdate();
         } catch (SQLException ex) {
             System.out.printf("Insertion error: %s%n", ex.getMessage());
@@ -62,7 +64,18 @@ public class UserDAO {
             return null;
         }
 
+        sendEmail(user.getEmail(), user.getId(), user.getEmailCode());
+
         return user.getId();
+    }
+
+    private void sendEmail(String email, String id, String code) {
+        emailService.send(email, "Confirmation",
+                String.format("<p>" +
+                                "%s or " +
+                                "<a href='http://localhost:8080/WebProject/confirm?userId=%s&confirm=%s'>link</a>" +
+                                "</p>",
+                        code, id, code));
     }
 
     /**
@@ -93,9 +106,10 @@ public class UserDAO {
         if (avatar != null) {
             dataToEdit.put("avatar", avatar);
         }
+        String code = null;
         if (email != null) {
             dataToEdit.put("email", email);
-            String code = UUID.randomUUID().toString().substring(0, 6);
+            code = UUID.randomUUID().toString().substring(0, 6);
             editedUser.setEmailCode(code);
             dataToEdit.put("email_code", code);
         }
@@ -129,12 +143,7 @@ public class UserDAO {
         }
 
         if (email != null) {
-            emailService.send(email, "Confirmation",
-                    String.format("<p>" +
-                                    "%s or " +
-                                    "<a href='https://localhost:8443/WebProject/confirm?userId=%s&confirm=%s'>link</a>" +
-                                    "</p>",
-                            editedUser.getEmailCode(), id, editedUser.getEmailCode()));
+            sendEmail(email, id, code);
         }
 
         return true;
