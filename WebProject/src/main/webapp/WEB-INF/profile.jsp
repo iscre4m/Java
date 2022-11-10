@@ -7,6 +7,7 @@
     User user = (User) request.getAttribute("user");
     String email = user.getEmail();
     String avatar = user.getAvatar();
+    Boolean confirmationNeeded = (Boolean) request.getAttribute("confirmationNeeded");
 %>
 <main>
     <% if (avatar != null) { %>
@@ -36,18 +37,22 @@
                 <span class="cursor-pointer profile-cancel">&#x274C;</span>
             </div>
         </div>
-        <% if (!Objects.equals(email, "")) { %>
         <div class="field">
             <div>
                 Email: <span data-field-name="email"><%= email %></span>
             </div>
             <div class="edit-icons">
+                <% if (confirmationNeeded) { %>
+                <a href="<%= contextPath %>/confirm"
+                   title="Email not confirmed">
+                    &#x1F4E7;
+                </a>
+                <% } %>
                 <span class="cursor-pointer profile-edit">&#x270E;</span>
                 <span class="cursor-pointer profile-confirm">&#x2705;</span>
                 <span class="cursor-pointer profile-cancel">&#x274C;</span>
             </div>
         </div>
-        <% } %>
         <div class="d-flex flex-column">
             <input id="avatarInput" type="file" hidden/>
             <span id="changeAvatar" class="m-auto cursor-pointer">Change avatar</span>
