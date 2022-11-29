@@ -34,7 +34,8 @@ public class DataFilter implements Filter {
         Connection connection = dataService.getConnection();
 
         if (connection == null) {
-            servletRequest.getRequestDispatcher("WEB-INF/static.jsp")
+            servletRequest.setAttribute("pageBody", "static.jsp");
+            servletRequest.getRequestDispatcher("WEB-INF/_layout.jsp")
                     .forward(servletRequest, servletResponse);
         } else {
             servletRequest.setAttribute("DataService", dataService);
