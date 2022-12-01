@@ -6,7 +6,11 @@ import step.learning.entities.Product;
 import step.learning.services.data.DataService;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Singleton
@@ -35,5 +39,24 @@ public class ProductDAO {
         }
 
         return product.getId();
+    }
+
+    public List<Product> getAll() {
+        List<Product> resultList = new ArrayList<>();
+        String command = "SELECT * FROM products";
+
+        try (Statement statement = dataService.getConnection().createStatement()) {
+            ResultSet resultSet = statement.executeQuery(command);
+
+            while (resultSet.next())
+            {
+                resultList.add(new Product(resultSet));
+            }
+        } catch (SQLException ex) {
+            System.out.println("ProductDAO::getAll: " + ex.getMessage());
+            System.out.println("Command: " + command);
+        }
+
+        return resultList;
     }
 }
