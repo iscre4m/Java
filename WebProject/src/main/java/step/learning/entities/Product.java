@@ -10,7 +10,8 @@ public class Product {
     private String description;
     private BigDecimal price;
 
-    public Product() {}
+    public Product() {
+    }
 
     public Product(ResultSet result) throws SQLException {
         setId(result.getString("id"));
