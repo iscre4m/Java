@@ -11,7 +11,7 @@
         </div>
         <div>
             <label for="price">Price</label>
-            <input type="number" id="price" name="price"/>
+            <input type="text" id="price" name="price"/>
         </div>
         <button type="submit">Add</button>
     </form>

@@ -17,7 +17,11 @@
             <span>&dollar;<%= product.getPrice() %></span>
             <% if (user != null) {%>
             <button>Edit</button>
-            <button>Delete</button>
+            <form method="post">
+                <input type="hidden" value="DELETE" name="method"/>
+                <input type="hidden" value="<%= product.getId() %>" name="product-id"/>
+                <button type="submit">Delete</button>
+            </form>
             <% } %>
         </li>
         <% } %>

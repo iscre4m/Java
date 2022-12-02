@@ -59,4 +59,16 @@ public class ProductDAO {
 
         return resultList;
     }
+
+    public void removeById(String id) {
+        String command = "DELETE FROM products WHERE `id` = ?";
+
+        try (PreparedStatement statement = dataService.getConnection().prepareStatement(command)) {
+            statement.setString(1, id);
+            statement.execute();
+        } catch (SQLException ex) {
+            System.out.println("ProductDAO::removeById" + ex.getMessage());
+            System.out.println("Command: " + command);
+        }
+    }
 }
