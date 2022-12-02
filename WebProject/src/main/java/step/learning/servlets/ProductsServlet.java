@@ -37,10 +37,12 @@ public class ProductsServlet extends HttpServlet {
         String method = req.getParameter("method");
         String id = req.getParameter("product-id");
 
-        if (method.equals("DELETE")) {
-            productDAO.removeById(id);
+        switch (method) {
+            case "PUT" -> resp.sendRedirect(req.getContextPath() + "/product?id=" + id);
+            case "DELETE" -> {
+                productDAO.removeById(id);
+                resp.sendRedirect(req.getContextPath() + "/products");
+            }
         }
-
-        resp.sendRedirect(req.getContextPath() + "/products");
     }
 }

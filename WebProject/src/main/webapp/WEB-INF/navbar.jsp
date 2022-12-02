@@ -15,7 +15,7 @@
         </li>
         <% if (user != null) { %>
         <li>
-            <a href="add_product">
+            <a href="product">
                 ADD PRODUCT
             </a>
         </li>

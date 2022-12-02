@@ -13,18 +13,26 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 @Singleton
-public class AddProductServlet extends HttpServlet {
+public class ProductServlet extends HttpServlet {
     private final ProductDAO productDAO;
 
     @Inject
-    public AddProductServlet(ProductDAO productDAO) {
+    public ProductServlet(ProductDAO productDAO) {
         this.productDAO = productDAO;
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        req.setAttribute("pageBody", "add_product.jsp");
+        String id = req.getParameter("id");
+        Product product = null;
+
+        if (id != null) {
+            product = productDAO.getById(id);
+        }
+
+        req.setAttribute("product", product);
+        req.setAttribute("pageBody", "product.jsp");
         req.getRequestDispatcher("WEB-INF/_layout.jsp")
                 .forward(req, resp);
     }
@@ -32,16 +40,22 @@ public class AddProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        String method = req.getParameter("method");
+        String id = req.getParameter("product-id");
         String name = req.getParameter("name");
         String description = req.getParameter("description");
         BigDecimal price = new BigDecimal(req.getParameter("price"));
         Product product = new Product();
 
+        product.setId(id);
         product.setName(name);
         product.setDescription(description);
         product.setPrice(price);
 
-        productDAO.add(product);
+        switch (method) {
+            case "POST" -> productDAO.add(product);
+            case "PUT" -> productDAO.update(product);
+        }
 
         resp.sendRedirect(req.getContextPath() + "/products");
     }
