@@ -13,6 +13,13 @@
                 HOME
             </a>
         </li>
+        <% if (user != null) { %>
+        <li>
+            <a href="add_product">
+                ADD PRODUCT
+            </a>
+        </li>
+        <% } %>
         <% for (String link : links) { %>
         <li>
             <a href="<%= link %>">

@@ -2,6 +2,7 @@
     font-family: Calibri, sans-serif;
     font-weight: bold;
     font-size: large;
+    box-sizing: border-box;
 }
 
 body {
@@ -78,7 +79,7 @@ form {
     align-items: center;
 }
 
-form > div {
+form > div, li > div {
     display: flex;
     flex-direction: column;
     margin-bottom: 0.75em;
@@ -110,7 +111,7 @@ input {
     color: #f0f3fa;
 }
 
-button[type=submit] {
+button {
     padding: 0.5em;
     width: 50%;
     min-width: 6em;
@@ -171,4 +172,18 @@ legend {
 
 .flex-column {
     flex-direction: column;
+}
+
+.card-list {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+.card-list-item {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    align-items: center;
 }
