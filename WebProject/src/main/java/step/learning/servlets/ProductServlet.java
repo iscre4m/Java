@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigDecimal;
 
@@ -34,14 +35,58 @@ public class ProductServlet extends HttpServlet {
             return;
         }
 
-        String productId = req.getParameter("id");
-        Product product = null;
+        HttpSession session = req.getSession();
+        Boolean nameIsBlank = (Boolean) session.getAttribute("nameIsBlank");
+        Boolean descriptionIsBlank = (Boolean) session.getAttribute("descriptionIsBlank");
+        Boolean priceIsBlank = (Boolean) session.getAttribute("priceIsBlank");
+        Boolean priceIsInvalid = (Boolean) session.getAttribute("priceIsInvalid");
+        boolean error = false;
 
-        if (productId != null) {
-            product = productDAO.getById(productId);
+        if (nameIsBlank != null) {
+            req.setAttribute("nameIsBlank", true);
+            session.removeAttribute("nameIsBlank");
+            error = true;
+        }
+        if (descriptionIsBlank != null) {
+            req.setAttribute("descriptionIsBlank", true);
+            session.removeAttribute("descriptionIsBlank");
+            error = true;
+        }
+        if (priceIsBlank != null) {
+            req.setAttribute("priceIsBlank", true);
+            session.removeAttribute("priceIsBlank");
+            error = true;
+        }
+        if (priceIsInvalid != null) {
+            req.setAttribute("priceIsInvalid", true);
+            session.removeAttribute("priceIsInvalid");
+            error = true;
         }
 
-        req.setAttribute("product", product);
+        req.setAttribute("name", session.getAttribute("name"));
+        session.removeAttribute("name");
+        req.setAttribute("description", session.getAttribute("description"));
+        session.removeAttribute("description");
+        req.setAttribute("priceString", session.getAttribute("priceString"));
+        session.removeAttribute("priceString");
+
+        req.setAttribute("buttonText", "Add");
+        if (!error) {
+            String productId = req.getParameter("id");
+            Product product;
+
+            if (productId != null) {
+                product = productDAO.getById(productId);
+                if (product != null) {
+                    req.setAttribute("id", product.getId());
+                    req.setAttribute("buttonText", "Edit");
+                    req.setAttribute("name", product.getName());
+                    req.setAttribute("description", product.getDescription());
+                    req.setAttribute("price", product.getPrice());
+                }
+            }
+        }
+
         req.setAttribute("pageBody", "product.jsp");
         req.getRequestDispatcher("WEB-INF/_layout.jsp")
                 .forward(req, resp);
@@ -50,19 +95,46 @@ public class ProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        HttpSession session = req.getSession();
         String userId = ((User) req.getAttribute("user")).getId();
-        String method = req.getParameter("method");
         String productId = req.getParameter("id");
-        System.out.println(productId);
+        String method = req.getParameter("method");
         String name = req.getParameter("name");
         String description = req.getParameter("description");
-        BigDecimal price = new BigDecimal(req.getParameter("price"));
+        String priceString = req.getParameter("price");
+        boolean error = false;
+
+        if (name.isBlank()) {
+            session.setAttribute("nameIsBlank", true);
+            error = true;
+        }
+        if (description.isBlank()) {
+            session.setAttribute("descriptionIsBlank", true);
+            error = true;
+        }
+        if (priceString.isBlank()) {
+            session.setAttribute("priceIsBlank", true);
+            error = true;
+        }
+        if (!priceString.matches("^(0|[1-9][0-9]{0,2})(,\\d{3})*(\\.\\d{1,2})?$")) {
+            session.setAttribute("priceIsInvalid", true);
+            error = true;
+        }
+
+        if (error) {
+            session.setAttribute("name", name);
+            session.setAttribute("description", description);
+            session.setAttribute("priceString", priceString);
+            resp.sendRedirect(req.getRequestURI());
+            return;
+        }
+
         Product product = new Product();
 
         product.setId(productId);
         product.setName(name);
         product.setDescription(description);
-        product.setPrice(price);
+        product.setPrice(new BigDecimal(priceString));
         product.setUserId(userId);
 
         switch (method) {
