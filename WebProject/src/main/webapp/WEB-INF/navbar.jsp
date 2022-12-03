@@ -30,7 +30,7 @@
         <li>
             <a href="<%= contextPath %>/register">REGISTER</a>
         </li>
-        <li>
+        <li style="margin-right: 1em">
             <a href="<%= contextPath %>/login">LOGIN</a>
         </li>
         <% } else { %>
@@ -50,7 +50,7 @@
                 />
             </a>
         </li>
-        <li>
+        <li style="margin-right: 1em">
             <form>
                 <input type="hidden" name="logout" value="navbar-logout"/>
                 <button type="submit">

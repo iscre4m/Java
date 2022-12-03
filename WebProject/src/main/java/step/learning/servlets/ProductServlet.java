@@ -34,7 +34,7 @@ public class ProductServlet extends HttpServlet {
             return;
         }
 
-        String productId = req.getParameter("product-id");
+        String productId = req.getParameter("id");
         Product product = null;
 
         if (productId != null) {
@@ -52,7 +52,8 @@ public class ProductServlet extends HttpServlet {
             throws ServletException, IOException {
         String userId = ((User) req.getAttribute("user")).getId();
         String method = req.getParameter("method");
-        String productId = req.getParameter("product-id");
+        String productId = req.getParameter("id");
+        System.out.println(productId);
         String name = req.getParameter("name");
         String description = req.getParameter("description");
         BigDecimal price = new BigDecimal(req.getParameter("price"));

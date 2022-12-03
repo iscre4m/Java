@@ -40,4 +40,19 @@ public class UserProductsServlet extends HttpServlet {
         req.getRequestDispatcher("WEB-INF/_layout.jsp")
                 .forward(req, resp);
     }
+
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        String method = req.getParameter("method");
+        String productId = req.getParameter("product-id");
+
+        switch (method) {
+            case "POST" -> resp.sendRedirect(req.getContextPath() + "/product");
+            case "PUT" -> resp.sendRedirect(req.getContextPath() + "/product?id=" + productId);
+            case "DELETE" -> {
+                productDAO.removeById(productId);
+                resp.sendRedirect(req.getContextPath() + "/products");
+            }
+        }
+    }
 }
