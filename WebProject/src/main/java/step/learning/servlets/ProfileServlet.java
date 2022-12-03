@@ -18,7 +18,7 @@ public class ProfileServlet extends HttpServlet {
         User user = (User) req.getAttribute("user");
 
         if(user == null) {
-            req.setAttribute("pageBody", "profile401.jsp");
+            req.setAttribute("pageBody", "not_authorized.jsp");
         } else {
             req.setAttribute("pageBody", "profile.jsp");
         }

@@ -19,6 +19,7 @@ public class ConfigServlets extends ServletModule {
         serve("/confirm").with(ConfirmationServlet.class);
         serve("/products").with(ProductsServlet.class);
         serve("/product").with(ProductServlet.class);
+        serve("/user_products").with((UserProductsServlet.class));
         serve("/").with(HomeServlet.class);
     }
 }

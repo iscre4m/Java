@@ -1,12 +1,14 @@
 <%@ page import="java.util.List" %>
 <%@ page import="step.learning.entities.Product" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="step.learning.entities.User" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
     List<Product> products = (ArrayList<Product>) request.getAttribute("products");
 %>
+
 <main>
-    <% if (products.size() == 0) { %>
+    <% if (products == null) { %>
     <h1>No products</h1>
     <% } else { %>
     <ul class="card-list">

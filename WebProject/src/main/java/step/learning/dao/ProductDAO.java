@@ -24,13 +24,14 @@ public class ProductDAO {
 
     public String add(Product product) {
         product.setId(UUID.randomUUID().toString());
-        String command = "INSERT INTO products VALUES (?, ?, ?, ?)";
+        String command = "INSERT INTO products VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement statement = dataService.getConnection().prepareStatement(command)) {
             statement.setString(1, product.getId());
             statement.setString(2, product.getName());
             statement.setString(3, product.getDescription());
             statement.setBigDecimal(4, product.getPrice());
+            statement.setString(5, product.getUserId());
 
             statement.execute();
         } catch (SQLException ex) {
@@ -42,21 +43,21 @@ public class ProductDAO {
     }
 
     public List<Product> getAll() {
-        List<Product> resultList = new ArrayList<>();
+        List<Product> products = new ArrayList<>();
         String command = "SELECT * FROM products";
 
         try (Statement statement = dataService.getConnection().createStatement()) {
-            ResultSet resultSet = statement.executeQuery(command);
+            ResultSet result = statement.executeQuery(command);
 
-            while (resultSet.next()) {
-                resultList.add(new Product(resultSet));
+            while (result.next()) {
+                products.add(new Product(result));
             }
         } catch (SQLException ex) {
             System.out.println("ProductDAO.getAll: " + ex.getMessage());
             System.out.println("Command: " + command);
         }
 
-        return resultList;
+        return products;
     }
 
     public void removeById(String id) {
@@ -106,5 +107,24 @@ public class ProductDAO {
             System.out.println("ProductDAO.update: " + ex.getMessage());
             System.out.println("Command: " + command);
         }
+    }
+
+    public List<Product> getByUserId(String id) {
+        List<Product> products = new ArrayList<>();
+        String command = "SELECT * FROM products WHERE `user_id` = ?";
+
+        try (PreparedStatement statement = dataService.getConnection().prepareStatement(command)) {
+            statement.setString(1, id);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                products.add(new Product(result));
+            }
+        } catch (SQLException ex) {
+            System.out.println("ProductDAO.getAll: " + ex.getMessage());
+            System.out.println("Command: " + command);
+        }
+
+        return products;
     }
 }

@@ -9,6 +9,7 @@ public class Product {
     private String name;
     private String description;
     private BigDecimal price;
+    private String userId;
 
     public Product() {
     }
@@ -50,5 +51,13 @@ public class Product {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

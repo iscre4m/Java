@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="step.learning.entities.User" %>
 <%
-    String[] links = {"products"};
     String contextPath = request.getContextPath();
     User user = (User) request.getAttribute("user");
     Boolean confirmationNeeded = (Boolean) request.getAttribute("confirmationNeeded");
@@ -13,17 +12,15 @@
                 HOME
             </a>
         </li>
-        <% if (user != null) { %>
         <li>
-            <a href="product">
-                ADD PRODUCT
+            <a href="products">
+                MARKET
             </a>
         </li>
-        <% } %>
-        <% for (String link : links) { %>
+        <% if (user != null) { %>
         <li>
-            <a href="<%= link %>">
-                <%= link.toUpperCase() %>
+            <a href="user_products">
+                MY PRODUCTS
             </a>
         </li>
         <% } %>

@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import step.learning.dao.ProductDAO;
 import step.learning.entities.Product;
+import step.learning.entities.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,11 +25,20 @@ public class ProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        String id = req.getParameter("id");
+        User user = (User) req.getAttribute("user");
+
+        if (user == null) {
+            req.setAttribute("pageBody", "not_authorized.jsp");
+            req.getRequestDispatcher("WEB-INF/_layout.jsp")
+                    .forward(req, resp);
+            return;
+        }
+
+        String productId = req.getParameter("product-id");
         Product product = null;
 
-        if (id != null) {
-            product = productDAO.getById(id);
+        if (productId != null) {
+            product = productDAO.getById(productId);
         }
 
         req.setAttribute("product", product);
@@ -40,17 +50,19 @@ public class ProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        String userId = ((User) req.getAttribute("user")).getId();
         String method = req.getParameter("method");
-        String id = req.getParameter("product-id");
+        String productId = req.getParameter("product-id");
         String name = req.getParameter("name");
         String description = req.getParameter("description");
         BigDecimal price = new BigDecimal(req.getParameter("price"));
         Product product = new Product();
 
-        product.setId(id);
+        product.setId(productId);
         product.setName(name);
         product.setDescription(description);
         product.setPrice(price);
+        product.setUserId(userId);
 
         switch (method) {
             case "POST" -> productDAO.add(product);
