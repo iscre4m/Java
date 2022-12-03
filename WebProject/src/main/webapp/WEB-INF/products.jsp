@@ -1,20 +1,21 @@
-<%@ page import="java.util.List" %>
 <%@ page import="step.learning.entities.Product" %>
-<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="com.google.common.collect.Multimap" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
-    List<Product> products = (ArrayList<Product>) request.getAttribute("products");
+    Multimap<String, Product> usersToProducts = (Multimap<String, Product>) request.getAttribute("usersToProducts");
 %>
 <main>
-    <% if (products.size() == 0) { %>
+    <% if (usersToProducts.size() == 0) { %>
     <h1>No products</h1>
     <% } else { %>
     <ul class="card-list">
-        <% for (Product product : products) { %>
+        <% for (Map.Entry<String, Product> userToProduct : usersToProducts.entries()) { %>
         <li class="card-list-item">
-            <span><%= product.getName() %></span>
-            <span><%= product.getDescription() %></span>
-            <span>&dollar;<%= product.getPrice() %></span>
+            <span><%= userToProduct.getValue().getName() %></span>
+            <span><%= userToProduct.getValue().getDescription() %></span>
+            <span>&dollar;<%= userToProduct.getValue().getPrice() %></span>
+            <span>Seller: <%= userToProduct.getKey() %></span>
         </li>
         <% } %>
     </ul>

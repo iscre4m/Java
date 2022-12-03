@@ -19,6 +19,7 @@ public class Product {
         setName(result.getString("name"));
         setDescription(result.getString("description"));
         setPrice(new BigDecimal(result.getString("price")));
+        setUserId(result.getString("user_id"));
     }
 
     public String getId() {
